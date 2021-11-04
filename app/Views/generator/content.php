@@ -1,0 +1,124 @@
+<div class="col-xl-12" style="margin-bottom: 250px;">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="form-group">
+                <label for="my-input">Select DB</label>
+                <select name="dbnya" id="inputdbnya" class="form-control" required="required">
+                    <option value="">Select Db</option>
+                    <?php
+                    $limit = count($databes);
+                    for ($i = 0; $i < $limit; $i++) {
+                        echo '<option value="' . $databes[$i]->Database . '">';
+                        print_r($databes[$i]->Database);
+                        echo "</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="my-input">Select Table</label>
+                <select name="table" id="inputtable" class="form-control" required="required">
+                    <option value="">Select Tablenya</option>
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="my-input">Select Framework</label>
+                <select name="table" id="inputfw" class="form-control" required="required">
+                    <option value="">Select Framework</option>
+                    <?php
+                    foreach ($fw as $obj) {
+                    ?>
+                        <option value="<?= $obj->id_framework ?>"><?= $obj->name_framework ?></option>
+                    <?php
+                    }
+                    ?>
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="my-input">Select Methods</label>
+                <select name="table" id="inputmethod" class="form-control" required="required">
+                    <option value="">Select Methods</option>
+
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <button type="button" class="submitbutton btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="form-group">
+                <button type="button" id="copythis" class="copybutton btn btn-primary">Copy</button>
+            </div>
+            <br>
+            <textarea style="min-height: 500px;" name="hasil" id="hasil" class="form-control" rows="3" required="required"></textarea>
+        </div>
+    </div>
+</div>
+<script type='text/javascript'>
+    $(document).ready(function() {
+        $("#inputdbnya").change(function(e) {
+            e.preventDefault();
+            var val = $(this).val();
+            data = {
+                id: val
+            };
+            pushForm(data, '/master/console/show_table', "#inputtable");
+        });
+        $("#inputtable").change(function(e) {
+            e.preventDefault();
+            var val = $(this).val();
+            var db = $("#inputdbnya").val();
+            data = {
+                id: val,
+                db: db,
+            };
+            pushForm(data, '/master/console/show_column', "#hasil");
+        });
+        $("#inputfw").click(function(e) {
+            e.preventDefault();
+            var val = $(this).val();
+            data = {
+                id: val,
+            };
+            pushForm(data, '/master/console/show_method', "#inputmethod");
+        });
+        $(".submitbutton").click(function(e) {
+            e.preventDefault();
+            var val = $("#inputmethod").val();
+            var db = $("#inputdbnya").val();
+            var table = $("#inputtable").val();
+            data = {
+                id: val,
+                db: db,
+                table: table
+
+            };
+            $.ajax({
+                type: "POST",
+                url: "<?= base_url('master/console/execute') ?>",
+                data: data,
+                success: function(response) {
+                    pushForm(data, '/' + response, "#hasil");
+                },
+                error: function(response) {
+                    alert('methods error!!!');
+                }
+            });
+
+        });
+        $("#copythis").click(function(e) {
+            e.preventDefault();
+            $("#hasil").select();
+            document.execCommand('copy');
+            alert("copied");
+        });
+    });
+</script>
