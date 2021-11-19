@@ -5,7 +5,7 @@ namespace App\Controllers\Master\PHP;
 use App\Controllers\BaseController;
 use App\Models\Console;
 
-class Codeigniter4 extends BaseController
+class Ci4api extends BaseController
 {
 	public function __construct()
 	{
@@ -17,7 +17,7 @@ class Codeigniter4 extends BaseController
 		$table = $this->request->getVar('table');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
-		return view('ci4/create', $data);
+		return view('ci4api/create', $data);
 	}
 	public function read()
 	{
@@ -25,7 +25,7 @@ class Codeigniter4 extends BaseController
 		$table = $this->request->getVar('table');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
-		return view('ci4/read', $data);
+		return view('ci4api/read', $data);
 	}
 	public function update()
 	{
@@ -33,7 +33,7 @@ class Codeigniter4 extends BaseController
 		$table = $this->request->getVar('table');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
-		return view('ci4/update', $data);
+		return view('ci4api/update', $data);
 	}
 	public function delete()
 	{
@@ -41,7 +41,7 @@ class Codeigniter4 extends BaseController
 		$table = $this->request->getVar('table');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
-		return view('ci4/delete', $data);
+		return view('ci4api/delete', $data);
 	}
 	public function detail()
 	{
@@ -49,7 +49,7 @@ class Codeigniter4 extends BaseController
 		$table = $this->request->getVar('table');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
-		return view('ci4/detail', $data);
+		return view('ci4api/detail', $data);
 	}
 	public function crud()
 	{
@@ -57,7 +57,7 @@ class Codeigniter4 extends BaseController
 		$table = $this->request->getVar('table');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
-		return view('ci4/crud',$data);
+		return view('ci4api/crud', $data);
 	}
 	public function validation()
 	{
@@ -65,7 +65,7 @@ class Codeigniter4 extends BaseController
 		$table = $this->request->getVar('table');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
-		return view('ci4/create', $data);
+		return view('ci4api/validation', $data);
 	}
 	public function route()
 	{
@@ -73,7 +73,7 @@ class Codeigniter4 extends BaseController
 		$table = $this->request->getVar('table');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
-		return view('ci4/create', $data);
+		return view('ci4api/route', $data);
 	}
 	public function model()
 	{
@@ -81,8 +81,6 @@ class Codeigniter4 extends BaseController
 		$table = $this->request->getVar('table');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
-		return view('ci4/model', $data);
+		return view('ci4api/model', $data);
 	}
-
-	
 }

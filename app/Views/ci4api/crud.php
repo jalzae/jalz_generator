@@ -18,6 +18,6 @@ public function update() {
 public function delete() {
 <?= $this->include('ci4api/delete') ?>
 }
-public function detail() {
+public function detail($id="null") {
 <?= $this->include('ci4api/detail') ?>
 }
