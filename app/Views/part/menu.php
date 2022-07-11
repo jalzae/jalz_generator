@@ -11,6 +11,12 @@
                 <a href="dashboard-analytics.html" class="dropdown-item">Analytics</a>
             </div>
         </li>
+        <li id="json" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard">
+                <i class="ri-dashboard-line me-1"></i> JSON Generator
+            </a>
+
+        </li>
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,7 +47,7 @@
                             <?php
                             foreach ($css as $obj) {
                             ?>
-                                <a href="#" value='<?= $obj->id_css ?>' class="dropdown-item"><?= $obj->name_css ?></a>
+                                <a href="#" value='<?= $obj->id_css ?>' class="selectcss dropdown-item"><?= $obj->name_css ?></a>
                             <?php
                             }
                             ?>
@@ -87,6 +93,18 @@
                 id: id
             };
             menuClick2('.selectthis', '/master/console/generator', data);
+        });
+        $("#json").click(function(e) {
+            e.preventDefault();
+            menuClick2('#json', '/master/console/json', null);
+        });
+        $(".selectcss").click(function(e) {
+            e.preventDefault();
+            var id = $(this).attr('value');
+            data = {
+                id: id
+            };
+            menuClick2('.selectthis', '/master/console/generator_form', data);
         });
     });
 </script>

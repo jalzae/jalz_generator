@@ -20,6 +20,7 @@ echo '
 
 echo 'if ($this->validation->run($data, "' . $table . '") == false) {
     $response = [
+        "status"=>400,
         "message" =>  $this->validation->getErrors(),
     ];
     return $this->respond($response, 400);
@@ -27,6 +28,7 @@ echo 'if ($this->validation->run($data, "' . $table . '") == false) {
 echo '&#13;$save=$this->' . $table . '->table()->insert($data);';
 echo '&#13;if($save){
     $message = [
+        "status"=>200,
        "message" => "Sukses",
        "data" => $data,
     ];
@@ -34,6 +36,7 @@ echo '&#13;if($save){
 }
 else {
     $message = [
+        "status"=>400,
         "message" => "Gagal",
         "data" => $data,
      ];

@@ -1,26 +1,21 @@
 <?php
 
 
-echo '$data["' . $table . '"]=$this->' . $table . '->getall();&#13;';
+echo '$data=$this->' . $table . '->getall();&#13;';
 
-echo '&#13;if(count($data["' . $table . '"])!=0){
+echo '&#13;if($data){
     $message = [
        "message" => "Sukses",
        "data" => $data,
+       "status"=>200,
     ];
-    return $this->respond($data, 200);
-}
-else if (count($data["' . $table . '"])==0){
-    $message = [
-        "message" => "Sukses, but no data here",
-        "data" => "No Data",
-     ];
-     return $this->respond($message, 201);
+    return $this->respond($message, 200);
 }
 else {
     $message = [
-        "message" => "Gagal",
-        "data" => "No Data",
+        "status"=>200,
+        "message" => "Data kosong",
+        "data" => $data,
      ];
-     return $this->respond($message, 400);
+     return $this->respond($message, 200);
 }';

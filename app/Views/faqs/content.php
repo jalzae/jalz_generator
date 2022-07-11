@@ -1,4 +1,3 @@
-
 <div class="col-sm-12 card">
     <div class="row mt--2 card-body">
         <div class="col-md-6">
@@ -12,7 +11,7 @@
                         </div>
 
                         <div class="form-grou
-                          <label for="input" class="col-sm-6 control-label">Isi Dokumentasi</label>
+                          <label for=" input" class="col-sm-6 control-label">Isi Dokumentasi</label>
                             <textarea class="col-10" id="desc_update" name="desc_update" required>
                             </textarea>
                         </div>
@@ -57,7 +56,7 @@
 </style>
 
 <script>
-    CKEDITOR.replace('desc_update', {});
+    $('#desc_update').summernote();
 </script>
 <script type='text/javascript'>
     $(document).ready(function() {
@@ -79,7 +78,7 @@
         });
         $("#formadd").submit(function(e) {
             var judul = $("input[name*='version_name']").val();
-            var desc = CKEDITOR.instances['desc_update'].getData();
+            var desc = $('#desc_update').summernote('code');
             e.preventDefault();
             $.ajax({
                 type: "POST",

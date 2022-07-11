@@ -55,16 +55,22 @@ class Ci4api extends BaseController
 	{
 		$db = $this->request->getVar('db');
 		$table = $this->request->getVar('table');
+		$namespace = $this->request->getVar('namespace');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
+		$limit = count($data['column']);
+		$data['limit'] = $limit;
+		$data['namespace'] = $namespace;
 		return view('ci4api/crud', $data);
 	}
 	public function validation()
 	{
 		$db = $this->request->getVar('db');
 		$table = $this->request->getVar('table');
+		$namespace = $this->request->getVar('namespace');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
+		$data['namespace'] = $namespace;
 		return view('ci4api/validation', $data);
 	}
 	public function route()
@@ -75,12 +81,34 @@ class Ci4api extends BaseController
 		$data['column'] = $this->cmd->show_column($db, $table);
 		return view('ci4api/route', $data);
 	}
+	
 	public function model()
 	{
 		$db = $this->request->getVar('db');
 		$table = $this->request->getVar('table');
+		$data['namespace'] = ucfirst($this->request->getVar('namespace'));
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
 		return view('ci4api/model', $data);
+	}
+
+	public function controller()
+	{
+		$db = $this->request->getVar('db');
+		$table = $this->request->getVar('table');
+		$data['namespace'] = ucfirst($this->request->getVar('namespace'));
+		$data['table'] = $table;
+		$data['column'] = $this->cmd->show_column($db, $table);
+		return view('ci4api/controller', $data);
+	}
+
+	public function migration()
+	{
+		$db = $this->request->getVar('db');
+		$table = $this->request->getVar('table');
+		$data['namespace'] = ucfirst($this->request->getVar('namespace'));
+		$data['table'] = $table;
+		$data['column'] = $this->cmd->show_column($db, $table);
+		return view('ci4api/migration', $data);
 	}
 }

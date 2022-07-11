@@ -46,6 +46,11 @@
                 </select>
             </div>
             <br>
+            <div class="form-group col-sm-6">
+                <label for="my-input">Type Namespace</label>
+                <input type="text" class="form-control col-sm-10" id="namespace" placeholder="Namespace">
+            </div>
+            <br>
             <div class="form-group">
                 <button type="button" class="submitbutton btn btn-primary">Submit</button>
             </div>
@@ -54,11 +59,22 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="form-group">
+            <div class="d-flex">
+
+                <div class="form-group col-sm-6">
+                    <label for="my-input">Type Filetype( Without dot)</label>
+                    <input type="text" class="col-sm-5" id="filetype" placeholder="filetype">
+                </div>
+            </div>
+            <br>
+
+            <div class="form-group d-flex">
+                <button type="button" style="margin-right: 10px;" id="generateit" class="btn btn-primary">Generate</button>
                 <button type="button" id="copythis" class="copybutton btn btn-primary">Copy</button>
             </div>
             <br>
             <textarea style="min-height: 500px;" name="hasil" id="hasil" class="form-control" rows="3" required="required"></textarea>
+
         </div>
     </div>
 </div>
@@ -95,10 +111,12 @@
             var val = $("#inputmethod").val();
             var db = $("#inputdbnya").val();
             var table = $("#inputtable").val();
+            var namespace = $("#namespace").val();
             data = {
                 id: val,
                 db: db,
-                table: table
+                table: table,
+                namespace: namespace,
 
             };
             $.ajax({
@@ -114,11 +132,40 @@
             });
 
         });
+        $("#generateit").click(function(e) {
+            e.preventDefault();
+            value = $("#hasil").val();
+            filetype = $("#filetype").val();
+            table = $("#inputtable").val();
+            method = $("#inputmethod option:selected").text();
+            data = {
+                value: value,
+                method: method,
+                table: table,
+                filetype: filetype,
+            };
+            console.log(data);
+            $.ajax({
+                type: "POST",
+                url: "<?= base_url('master/console/generate') ?>",
+                data: data,
+                success: function(response) {
+                    swal("Berhasil");
+                },
+                error: function(response) {
+                    alert('methods error!!!');
+                }
+            });
+
+
+        });
         $("#copythis").click(function(e) {
             e.preventDefault();
             $("#hasil").select();
             document.execCommand('copy');
             alert("copied");
         });
+
+       
     });
 </script>
