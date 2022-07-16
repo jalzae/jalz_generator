@@ -53,8 +53,6 @@ foreach ($column as $obj) {
         echo "Method not found!!";
     }
 
-
-
     echo '],
     ';
 }
@@ -63,7 +61,7 @@ foreach ($column as $obj) {
 ]);
 $this->forge->addPrimaryKey('<?= $column[0]['Field'] ?>', true);
 $attributes = ['ENGINE' => 'InnoDB'];
-$this->forge->createTable('<?= $table ?>',false,$$attributes);
+$this->forge->createTable('<?= $table ?>',false,$attributes);
 }
 
 public function down() {

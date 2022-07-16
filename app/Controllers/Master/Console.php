@@ -31,8 +31,11 @@ class Console extends BaseController
 	}
 	public function json()
 	{
-
 		return view('generator/content_json');
+	}
+	public function console()
+	{
+		return view('generator/content_console');
 	}
 	public function generator()
 	{
@@ -132,7 +135,7 @@ class Console extends BaseController
 		$value = $this->request->getVar('value');
 		$method = $this->request->getVar('method');
 		$filetype = $this->request->getVar('filetype');
-		$save = file_put_contents('result/' . $method . 's/' . ucfirst(str_replace('_', '', $table)) .'.'. $filetype, $value);
+		$save = file_put_contents('result/' . $method . 's/' . ucfirst(str_replace('_', '', $table)) . '.' . $filetype, $value);
 		if ($save) {
 			echo "Berhasil";
 		} else {

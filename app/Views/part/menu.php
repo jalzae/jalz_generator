@@ -3,12 +3,11 @@
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="ri-dashboard-line me-1"></i> Dashboards <div class="arrow-down"></div>
+                <i class="ri-dashboard-line me-1"></i>Feature<div class="arrow-down"></div>
             </a>
             <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
-                <a href="index.html" class="dropdown-item">Sales</a>
-                <a href="dashboard-crm.html" class="dropdown-item">CRM</a>
-                <a href="dashboard-analytics.html" class="dropdown-item">Analytics</a>
+                <a id="console" href="#" class="dropdown-item">Console Methods</a>
+
             </div>
         </li>
         <li id="json" class="nav-item dropdown">
@@ -97,6 +96,10 @@
         $("#json").click(function(e) {
             e.preventDefault();
             menuClick2('#json', '/master/console/json', null);
+        });
+        $("#console").click(function(e) {
+            e.preventDefault();
+            menuClick2('#console', '/master/console/console', null);
         });
         $(".selectcss").click(function(e) {
             e.preventDefault();
