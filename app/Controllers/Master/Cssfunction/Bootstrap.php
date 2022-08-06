@@ -10,7 +10,7 @@ class Bootstrap extends BaseController
 	{
 		$data = json_decode(file_get_contents('php://input'), true);
 
-		foreach ($data as $obj) {
+		foreach ($data['table'] as $obj) {
 			$name = str_replace('_', ' ', $obj['name']);
 			if ($obj['write'] == "yes") {
 

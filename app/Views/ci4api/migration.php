@@ -4,7 +4,7 @@ $this->forge->addField([
 foreach ($column as $obj) {
     echo '"' . $obj['Field'] . '"=>[';
     if ($obj['Field'] != 'update_date' || $obj['Field'] != 'entry_date' || $obj['Field'] != 'delete_date' || $obj['Field'] != 'entry_user' || $obj['Field'] != 'update_user' || $obj['Field'] != 'delete_user') {
-        echo '"type" =>"' . strtoupper(strtok($obj['Type'], '(')) . '",';
+        echo '"type" =>' . strtoupper(strtok($obj['Type'], '(')) . ',';
 
         if ($obj['Type'] != 'datetime') {
             echo
@@ -18,7 +18,7 @@ foreach ($column as $obj) {
         }
 
         if ($obj['Default'] != null) {
-            echo '"default" =>"' . $obj['Type'] . '",';
+            echo '"default" =>"' . $obj['Default'] . '",';
         }
 
         if ($obj['Extra'] == 'auto_increment') {

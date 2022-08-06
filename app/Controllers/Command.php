@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\Functionc\Ci4;
 use App\Models\Functionc\Sequelize;
+use App\Models\Functionc\Sql;
 
 class Command extends BaseController
 {
@@ -13,6 +14,7 @@ class Command extends BaseController
 
 		$this->sequelize = new Sequelize();
 		$this->ci4 = new Ci4();
+		$this->sql = new Sql();
 	}
 	public function generate()
 	{
@@ -37,6 +39,13 @@ class Command extends BaseController
 				if (empty($command[2])) {
 					return "Name Migration result must be provided";
 				}
+
+				if (!empty($command[3])) {
+					if ($command[3] == "paranoid") {
+						$checked = $this->paranoid($checked);
+					}
+				}
+
 				return $this->sequelize->resultSequelizeMigration($checked, $command[2]);
 			}
 
@@ -63,7 +72,40 @@ class Command extends BaseController
 		}
 		//Codeigniter4 
 		else if ($command[0] == "Ci4") {
-			return "access methods on ci4 is not configured";
+			if ($command[1] == "migration") {
+				if (empty($command[2])) {
+					return "Name Migration result must be provided";
+				}
+
+				if (!empty($command[3])) {
+					if ($command[3] == "paranoid") {
+						$checked = $this->paranoid($checked);
+					}
+				}
+
+				return $this->ci4->resultMigrateCreate($checked, $command[2]);
+			} else {
+				return "This method is not exist dude";
+			}
+		}
+		//Sql Function
+		else if ($command[0] == "Sql") {
+
+			if ($command[1] == "create") {
+
+				if (empty($command[2])) {
+					return "Name Table result must be provided";
+				}
+
+				if (!empty($command[3])) {
+					if ($command[3] == "paranoid") {
+						$checked = $this->paranoid($checked);
+					}
+				}
+				return $this->sql->resultSqlCreate($checked, $command[2]);
+			} else {
+				echo "Sql Methods not found";
+			}
 		} else {
 			echo "Methods not found";
 		}
@@ -86,7 +128,7 @@ class Command extends BaseController
 						return "error on line is empty" . $exploded[1];
 					}
 
-					if (trim($exploded[1]) == "varchar" || trim($exploded[1]) == "char") {
+					if (trim($exploded[1]) == "varchar" || trim($exploded[1]) == "char" || trim($exploded[1]) == "int") {
 						if (!is_numeric(trim($exploded[2]))) {
 							return "error on " . $exploded[0] . " : must be contraits number of " . $exploded[1];
 						}
@@ -103,9 +145,15 @@ class Command extends BaseController
 				"contraits" => $contraits,
 				"null" => (strpos($obj, 'null') != false ?  'true' : 'false'),
 				"default" => (strpos($obj, 'default') != false ?  $this->getStringBetween($obj, '(', ')') : 'false'),
-				"enum" => (strpos($obj, 'default') != false ?  $this->getStringBetween($obj, '[', ']') : 'false'),
+				//NOTE enum choice use / and default will direct value so check it first 
+				"enum" => (strpos($obj, 'enum') != false ?  $this->getStringBetween($obj, '[', ']') : 'false'),
+				//NOTE Foreign key access with dots, so make it like student.id it will be produce table:student,column:id
+				"foreign" => (strpos($obj, 'foreign') != false ? $this->getStringBetween($obj, '{', '}') : 'false'),
+				"comment" => (strpos($obj, 'comment') != false ? $this->getStringBetween($obj, '`', '`') : 'false'),
 				"primmary_key" => (strpos($obj, 'primmary_key') != false ?  'true' : 'false'),
 				"auto_increment" => (strpos($obj, 'auto_increment') != false ?  'true' : 'false'),
+				"unsigned" => (strpos($obj, 'unsigned') != false ?  'true' : 'false'),
+				"unique" => (strpos($obj, 'unique') != false ?  'true' : 'false'),
 			];
 
 			array_push($result, $temp);
@@ -115,10 +163,123 @@ class Command extends BaseController
 	}
 
 
+
+
 	//Helper
 	function getStringBetween($str, $from, $to)
 	{
 		$sub = substr($str, strpos($str, $from) + strlen($from), strlen($str));
 		return substr($sub, 0, strpos($sub, $to));
+	}
+
+	function paranoid($array)
+	{
+		$status_delete = [
+			"name" => 'status_delete',
+			"type" => 'int',
+			"contraits" => 1,
+			"null"			=> "true",
+			"default" =>			"false",
+			//NOTE enum choice use / and default will direct value so check it first 
+			"enum" =>			"false",
+			//NOTE Foreign key access with dots, so make it like student.id it will be produce table:student,column:id
+			"foreign"			=> "false",
+			"comment"			=> "false",
+			"primmary_key"			=> "false",
+			"auto_increment" => "false",
+		];
+		$entry_date = [
+			"name" => 'entry_date',
+			"type" => 'datetime',
+			"contraits" => 0,
+			"null"			=> "false",
+			"default" => "CURRENT_TIMESTAMP",
+			//NOTE enum choice use / and default will direct value so check it first 
+			"enum" =>			"false",
+			//NOTE Foreign key access with dots, so make it like student.id it will be produce table:student,column:id
+			"foreign"			=> "false",
+			"comment"			=> "false",
+			"primmary_key"			=> "false",
+			"auto_increment" => "false",
+		];
+		$update_date = [
+			"name" => 'update_date',
+			"type" => 'datetime',
+			"contraits" => 0,
+			"null"			=> "false",
+			"default" => "CURRENT_TIMESTAMP",
+			//NOTE enum choice use / and default will direct value so check it first 
+			"enum" =>			"false",
+			//NOTE Foreign key access with dots, so make it like student.id it will be produce table:student,column:id
+			"foreign"			=> "false",
+			"comment"			=> "false",
+			"primmary_key"			=> "false",
+			"auto_increment" => "false",
+		];
+		$delete_date = [
+			"name" => 'delete_date',
+			"type" => 'datetime',
+			"contraits" => 0,
+			"null"			=> "true",
+			"default" => "false",
+			//NOTE enum choice use / and default will direct value so check it first 
+			"enum" =>			"false",
+			//NOTE Foreign key access with dots, so make it like student.id it will be produce table:student,column:id
+			"foreign"			=> "false",
+			"comment"			=> "false",
+			"primmary_key"			=> "false",
+			"auto_increment" => "false",
+		];
+
+		$entry_user = [
+			"name" => 'entry_user',
+			"type" => 'varchar',
+			"contraits" => 200,
+			"null"			=> "false",
+			"default" => "false",
+			//NOTE enum choice use / and default will direct value so check it first 
+			"enum" =>			"false",
+			//NOTE Foreign key access with dots, so make it like student.id it will be produce table:student,column:id
+			"foreign"			=> "false",
+			"comment"			=> "false",
+			"primmary_key"			=> "false",
+			"auto_increment" => "false",
+		];
+		$update_user = [
+			"name" => 'update_user',
+			"type" => 'varchar',
+			"contraits" => 200,
+			"null"			=> "false",
+			"default" => "false",
+			//NOTE enum choice use / and default will direct value so check it first 
+			"enum" =>			"false",
+			//NOTE Foreign key access with dots, so make it like student.id it will be produce table:student,column:id
+			"foreign"			=> "false",
+			"comment"			=> "false",
+			"primmary_key"			=> "false",
+			"auto_increment" => "false",
+		];
+		$delete_user = [
+			"name" => 'delete_user',
+			"type" => 'varchar',
+			"contraits" => 200,
+			"null"			=> "true",
+			"default" => "false",
+			//NOTE enum choice use / and default will direct value so check it first 
+			"enum" =>			"false",
+			//NOTE Foreign key access with dots, so make it like student.id it will be produce table:student,column:id
+			"foreign"			=> "false",
+			"comment"			=> "false",
+			"primmary_key"			=> "false",
+			"auto_increment" => "false",
+		];
+		array_push($array, $status_delete);
+		array_push($array, $entry_date);
+		array_push($array, $update_date);
+		array_push($array, $delete_date);
+		array_push($array, $entry_user);
+		array_push($array, $update_user);
+		array_push($array, $delete_user);
+		return $array;
 	}
 }

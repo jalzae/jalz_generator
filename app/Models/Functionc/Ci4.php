@@ -6,37 +6,58 @@ use CodeIgniter\Model;
 
 class Ci4 extends Model
 {
-	protected $DBGroup              = 'default';
-	protected $table                = 'ci4s';
-	protected $primaryKey           = 'id';
-	protected $useAutoIncrement     = true;
-	protected $insertID             = 0;
-	protected $returnType           = 'array';
-	protected $useSoftDeletes       = false;
-	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	public function resultMigrateCreate($array, $table, $option = [])
+	{
+		$primmaryKey = "";
+		echo 'public function up() {';
+		echo '$fields=[';
+		foreach ($array as $obj) {
+			echo '"' . $obj['name'] . '"=>[';
+			echo '"type" =>"' . strtoupper(strtok($obj['type'], '(')) . '",';
 
-	// Dates
-	protected $useTimestamps        = false;
-	protected $dateFormat           = 'datetime';
-	protected $createdField         = 'created_at';
-	protected $updatedField         = 'updated_at';
-	protected $deletedField         = 'deleted_at';
+			if ($obj['type'] != 'datetime' || $obj['type'] != 'uuid' || $obj['type'] != 'bool') {
+				if ($obj['contraits'] != 0) {
+					echo
+					'"constraint" =>"' . $obj['contraits'] . '",';
+				}
+			}
 
-	// Validation
-	protected $validationRules      = [];
-	protected $validationMessages   = [];
-	protected $skipValidation       = false;
-	protected $cleanValidationRules = true;
+			if ($obj['null'] == "false") {
+				echo '"null" =>false,';
+			} else {
+				echo '"null" =>true,';
+			}
 
-	// Callbacks
-	protected $allowCallbacks       = true;
-	protected $beforeInsert         = [];
-	protected $afterInsert          = [];
-	protected $beforeUpdate         = [];
-	protected $afterUpdate          = [];
-	protected $beforeFind           = [];
-	protected $afterFind            = [];
-	protected $beforeDelete         = [];
-	protected $afterDelete          = [];
+			if ($obj['default'] != "false") {
+				if ($obj['type'] != "datetime") {
+					echo '"default" =>"' . $obj['default'] . '",';
+				}
+			}
+
+			if ($obj['auto_increment'] != 'false') {
+				echo '"auto_increment" =>true';
+			}
+
+			if ($obj['primmary_key'] != 'false') {
+				$primmaryKey = $obj['name'];
+			}
+			echo '],
+    	';
+		}
+		echo '];';
+
+		echo '$this->forge->addField($fields);';
+
+		echo '$this->forge->addPrimaryKey("' . $primmaryKey . '", true);';
+		echo '$attributes = ["ENGINE" => "InnoDB"];';
+		echo '$this->forge->createTable("' . $table . '", false, $attributes);';
+		echo '}
+		';
+
+		echo 'public function down() {';
+		echo '
+		return $this->db->query("DROP TABLE `' . $table . '`");
+		';
+		echo '}';
+	}
 }
