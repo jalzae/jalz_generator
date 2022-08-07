@@ -7,8 +7,12 @@ foreach ($column as $obj) {
         echo '"type" =>"' . trim(strtoupper(strtok($obj['Type'], '('))) . '",';
 
         if ($obj['Type'] != 'datetime') {
-            echo
-            '"constraint" =>' . preg_replace('/[()]/', ' ', trim(strstr($obj['Type'], '('))) . ',';
+            $value = preg_replace('/[()]/', ' ', strstr($obj['Type'], '('));
+            if($value!=""){
+                echo
+                '"constraint" =>'.$value.',';
+            }
+          
         }
 
         if ($obj['Null'] == "NO") {
