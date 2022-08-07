@@ -4,11 +4,11 @@ $this->forge->addField([
 foreach ($column as $obj) {
     echo '"' . $obj['Field'] . '"=>[';
     if ($obj['Field'] != 'update_date' || $obj['Field'] != 'entry_date' || $obj['Field'] != 'delete_date' || $obj['Field'] != 'entry_user' || $obj['Field'] != 'update_user' || $obj['Field'] != 'delete_user') {
-        echo '"type" =>' . strtoupper(strtok($obj['Type'], '(')) . ',';
+        echo '"type" =>"' . trim(strtoupper(strtok($obj['Type'], '('))) . '",';
 
         if ($obj['Type'] != 'datetime') {
             echo
-            '"constraint" =>"' . preg_replace('/[()]/', ' ', strstr($obj['Type'], '(')) . '",';
+            '"constraint" =>' . preg_replace('/[()]/', ' ', trim(strstr($obj['Type'], '('))) . ',';
         }
 
         if ($obj['Null'] == "NO") {

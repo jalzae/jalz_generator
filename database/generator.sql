@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2022 at 01:08 AM
+-- Generation Time: Aug 06, 2022 at 03:59 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 7.4.23
 
@@ -66,7 +66,9 @@ INSERT INTO `faq` (`id_faq`, `version_name`, `desc_update`, `entry_user`, `entry
 (9, '1.0.2', '<p>- Update CRUD Ci4 Native&nbsp;</p>\n\n<p>- Method CI4: Cread,Read,Update,Delete,CRUD done!</p>\n', 'Admin', '2021-11-04 10:01:16'),
 (10, '1.0.3', '<p>- Update Generator Model Codeigniter 4 : Model</p>\n', 'Admin', '2021-11-04 10:19:41'),
 (11, '1.0.5', '<p>- Update vuex,</p>\n\n<p>- Update Axios</p>\n\n<p>- Update Method Vue Function</p>\n\n<p>- Update Generator Form Vue&nbsp;</p>\n', 'Admin', '2021-11-19 18:33:59'),
-(12, '1.0.6', 'Update Generator Controller dan Model untuk CI4', 'Admin', '2021-11-20 15:44:01');
+(12, '1.0.6', 'Update Generator Controller dan Model untuk CI4', 'Admin', '2021-11-20 15:44:01'),
+(13, '1.1.0', 'Update Codeigniter api dynamic model crud dll', 'Admin', '2022-07-16 09:25:54'),
+(14, '1.1.1', 'Update command feature&nbsp;<br><br>Support :<br>1. Sequelize Migration<br><br>other in progress', 'Admin', '2022-07-16 13:44:32');
 
 -- --------------------------------------------------------
 
@@ -309,7 +311,7 @@ ALTER TABLE `css`
 -- AUTO_INCREMENT for table `faq`
 --
 ALTER TABLE `faq`
-  MODIFY `id_faq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_faq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `framework`
