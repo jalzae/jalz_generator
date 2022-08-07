@@ -3,6 +3,7 @@
 namespace App\Controllers\Master\PHP;
 
 use App\Controllers\BaseController;
+use App\Models\All;
 use App\Models\Console;
 
 class Ci4api extends BaseController
@@ -10,6 +11,7 @@ class Ci4api extends BaseController
 	public function __construct()
 	{
 		$this->cmd = new Console();
+		$this->all = new All();
 	}
 	public function create()
 	{
@@ -81,7 +83,7 @@ class Ci4api extends BaseController
 		$data['column'] = $this->cmd->show_column($db, $table);
 		return view('ci4api/route', $data);
 	}
-	
+
 	public function model()
 	{
 		$db = $this->request->getVar('db');
@@ -110,5 +112,17 @@ class Ci4api extends BaseController
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
 		return view('ci4api/migration', $data);
+	}
+
+	public function seeder()
+	{
+		$db = $this->request->getVar('db');
+		$table = $this->request->getVar('table');
+		$nametable = $db . '.' . $table;
+		$data['namespace'] = ucfirst($this->request->getVar('namespace'));
+		$data['table'] = $table;
+		$data['column'] = $this->cmd->show_column($db, $table);
+		$data['data'] = $this->all->table($nametable)->get()->getResult('array');
+		return view('ci4api/seeder', $data);
 	}
 }
