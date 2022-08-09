@@ -119,7 +119,7 @@ class All extends Model
 		return $data;
 	}
 
-	function pagination($table, $where = [], $orderby = [], $include = [], $page = 1, $per_page = 10, $like = [], $orLike = [], $groupBy = [], $distinct = '', $select = ['*'], $customSelect = '')
+	function pagination($table, $where = [], $orderby = [], $include = [], $page = 1, $per_page = 10, $like = [], $orLike = [], $groupBy = [], $aliases = true, $distinct = '', $select = ['*'], $customSelect = '')
 	{
 		if ($page == 1) {
 			$start = 0;
@@ -133,11 +133,19 @@ class All extends Model
 
 		if (count($select) > 1) {
 			$column = "";
-			for ($i = 1; $i < count($select); $i++) {
+			for ($i = 0; $i < count($select); $i++) {
 				$column .= $select[$i] . ',';
 			}
 			$column = substr($column, 0, -1);
 			$builder->select($column);
+		} else 	if (count($include) != 0 && $aliases == true) {
+			$string = "";
+			$string .= $this->table_column($table);
+			for ($i = 0; $i < count($include); $i++) {
+				$tablename = $include[$i]['model'];
+				$string .= $this->table_column($tablename);
+			}
+			$builder->select(substr($string, 0, -1));
 		} else {
 			$builder->select('*');
 		}
@@ -160,13 +168,13 @@ class All extends Model
 		}
 
 		if (count($like) != 0) {
-			for ($i = 1; $i < count($like); $i++) {
+			for ($i = 0; $i < count($like); $i++) {
 				$builder->like($like[$i]['column'], $like[$i]['value'], $like[$i]['wildcard']);
 			}
 		}
 
 		if (count($orLike) != 0) {
-			for ($i = 1; $i < count($orLike); $i++) {
+			for ($i = 0; $i < count($orLike); $i++) {
 				$builder->orLike($orLike[$i]['column'], $orLike[$i]['value'], $orLike[$i]['wildcard']);
 			}
 		}
@@ -176,12 +184,18 @@ class All extends Model
 		}
 
 		if (count($include) != 0) {
-			for ($i = 1; $i < count($include); $i++) {
+			for ($i = 0; $i < count($include); $i++) {
 				$builder->join($include[$i]['model'], $include[$i]['on'], $include[$i]['type']);
 			}
 		}
 
 		$dataarray = $builder->get($per_page, $start)->getResult();
+
+		if (count($include) != 0 && $aliases == true) {
+			// $dataarray = $this->includes($dataarray, $include);
+			//TODO nanti
+		}
+
 
 		$jumlah = $builder->countAllResults(false);
 
@@ -292,5 +306,66 @@ class All extends Model
 		} catch (Throwable $e) {
 			return false;
 		}
+	}
+
+	function seeding()
+	{
+
+		$files = glob(APPPATH . 'Database/Seeds/*');
+
+		try {
+			$seeder = \Config\Database::seeder();
+
+			foreach ($files as $file) {
+				$seeder->call(basename($file, ".php"));
+			}
+
+			return $this->respond(['message' => 'Sukses Seeding'], 200);
+		} catch (Exception $e) {
+			return $this->respond(['message' => 'Gagal Seeding'], 201);
+		}
+	}
+
+	function table_column($table)
+	{
+		$fields = $this->db->getFieldNames($table);
+		$columns = "";
+		foreach ($fields as $field) {
+			$columns .=  "$table." . $field . " as " . ucfirst(str_replace("_", "", $table)) . ucfirst(str_replace("_", "", $field)) . ",";
+		}
+		return $columns;
+	}
+
+	function includes($result, $include)
+	{
+
+		//Hasilnya diloop
+		$result = json_decode(json_encode($result), true);
+
+		$filtering = $this->distinctIt($result);
+
+		//includes dan push ke id sebagai batch array 
+		//TODO foreach filtering kemudian cari value dari kolom keys yang sama
+		foreach ($filtering as $index => $value) {
+			$colors = array_column($result, 'fav_color');
+			$found_key = array_search('blue', $colors);
+		}
+
+		return $filtering;
+	}
+
+	function distinctIt($filtered)
+	{
+
+		$result = array_filter(
+			$filtered,
+			function ($value, $index) use ($filtered) {
+				$keys = array_key_first($value);
+				return $index === array_search($value[$keys], array_column($filtered, $keys));
+			},
+			ARRAY_FILTER_USE_BOTH
+		);
+
+		return $result;
 	}
 }
