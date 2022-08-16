@@ -13,6 +13,7 @@ class Home extends BaseController
 		$this->css = new Css();
 		$this->fw = new Lang();
 		$this->all = new All();
+		helper(['Helper_response']);
 	}
 
 	public function index()
@@ -22,18 +23,28 @@ class Home extends BaseController
 		return view('dashboard', $data);
 	}
 
-	public function test()
+	public function sample_distinct()
 	{
 
-		$data =	$this->all->pagination('data_kelas', [
-			'data_kelas.id_kelas' => 1
-		], [], [
+		$data = [
 			[
-				'model' => 'data_siswa',
-				'on' => 'data_kelas.id_kelas=data_siswa.id_kelas',
-				'type' => 'inner'
-			]
-		]);
+				'id' => 1,
+				'nama' => 'burhan',
+			],
+			[
+				'id' => 2,
+				'nama' => 'burhan',
+			],
+			[
+				'id' => 2,
+				'nama' => 'adit',
+			],
+			[
+				'id' => 3,
+				'nama' => 'jarwo',
+			],
+		];
+		$data = distincData($data, 'nama');
 
 		echo '<pre>;';
 		print_r($data);

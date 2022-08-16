@@ -74,4 +74,16 @@ class Vuex extends BaseController
             state.' . $table . 's.splice(state.' . $table . 's.indexOf(' . $table . '), 1)
         }';
     }
+
+    public function nuxt_store()
+    {
+        $db = $this->request->getVar('db');
+        $table = $this->request->getVar('table');
+        $data['table'] = $table;
+        $data['column'] = $this->cmd->show_column($db, $table);
+        $limit = count($data['column']);
+        $data['limit'] = $limit;
+
+        return view('vuex/nuxt_store', $data);
+    }
 }
