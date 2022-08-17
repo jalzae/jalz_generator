@@ -1,6 +1,48 @@
 <div class="col-xl-12" style="margin-bottom: 250px;">
     <div class="card">
         <div class="card-body">
+            <fieldset>
+                <legend>Usage Command List:</legend>
+                <p>Sequelize migration|model|validation ${name} paranoid(if true)</p>
+                <p>Ci4 migration ${name} paranoid(if true)</p>
+                <p>Sql create ${name} paranoid(if true)</p>
+                <table class="table table-light table-hover  table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>Symbol</td>
+                            <td>Function</td>
+                            <td>Symbol</td>
+                            <td>Function</td>
+                            <td>Symbol</td>
+                            <td>Function</td>
+                        </tr>
+                        <tr>
+                            <td>:</td>
+                            <td>Delimiter type</td>
+                            <td>null</td>
+                            <td>When isnull</td>
+                            <td>default</td>
+                            <td>(value)</td>
+                        </tr>
+                        <tr>
+                            <td>enum</td>
+                            <td>[value]</td>
+                            <td>foreign</td>
+                            <td>{value}</td>
+                            <td>primmary_key</td>
+                            <td>primmary_key</td>
+                        </tr>
+                        <tr>
+                            <td>auto_increment</td>
+                            <td>auto_increment</td>
+                            <td>unsigned</td>
+                            <td>unsigned</td>
+                            <td>unique</td>
+                            <td>unique</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
             <div class="form-group">
                 <label for="my-input">Run Methods</label>
                 <input type="text" class="form-control" id="inputmethod" />
@@ -10,7 +52,6 @@
                 <button type="button" class="form-control submitbutton btn btn-primary">Run</button>
             </div>
             <br>
-
 
         </div>
     </div>

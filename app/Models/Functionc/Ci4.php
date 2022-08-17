@@ -18,7 +18,7 @@ class Ci4 extends Model
 			if ($obj['type'] != 'datetime' || $obj['type'] != 'uuid' || $obj['type'] != 'bool') {
 				if ($obj['contraits'] != 0) {
 					echo
-					'"constraint" =>"' . $obj['contraits'] . '",';
+					'"constraint" =>' . $obj['contraits'] . ',';
 				}
 			}
 

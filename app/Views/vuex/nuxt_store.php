@@ -1,5 +1,5 @@
 export const state = () => ({
-<?= $table ?> : []
+<?= $table ?>s : []
 })
 
 export const getters = {
@@ -46,7 +46,7 @@ echo '
 
 
 for ($i = 1; $i < $limit; $i++) {
-  echo 'state.' . $table . 's[index].' . $column[$i]['Field'] . ' = data.' . $column[$i]['Field'] . ';';
+    echo 'state.' . $table . 's[index].' . $column[$i]['Field'] . ' = data.' . $column[$i]['Field'] . ';';
 }
 
 echo '
