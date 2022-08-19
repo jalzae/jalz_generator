@@ -142,4 +142,9 @@ class Console extends BaseController
 			echo "Gagal";
 		}
 	}
+
+	public function autotest()
+	{
+		return view('generator/content_test');
+	}
 }

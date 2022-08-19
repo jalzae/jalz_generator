@@ -6,8 +6,8 @@
                 <i class="ri-dashboard-line me-1"></i>Feature<div class="arrow-down"></div>
             </a>
             <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
+                <a id="autotest" href="#" class="dropdown-item">Generate Test</a>
                 <a id="console" href="#" class="dropdown-item">Console Methods</a>
-
             </div>
         </li>
         <li class="nav-item dropdown">
@@ -93,6 +93,10 @@
         $("#console").click(function(e) {
             e.preventDefault();
             menuClick2('#console', '/master/console/console', null);
+        });
+        $("#autotest").click(function(e) {
+            e.preventDefault();
+            menuClick2('#autotest', '/master/console/autotest', null);
         });
         $(".selectcss").click(function(e) {
             e.preventDefault();
