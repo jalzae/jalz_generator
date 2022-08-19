@@ -47,6 +47,7 @@ class Command extends BaseController
 					}
 				}
 
+
 				return $this->sequelize->resultSequelizeMigration($checked, $command[2]);
 			}
 

@@ -130,9 +130,13 @@ class Sequelize extends Model
 			";
 		}
 		echo "},";
-		echo ",{";
+		echo "{";
 		echo " paranoid:";
-		($paranoid) ? 'true' : 'false';
+		if ($paranoid) {
+			echo 'true,';
+		} else {
+			echo 'false,';
+		}
 		echo "tableName: '$tableName',
             timestamps: true,
             underscored: true,";
