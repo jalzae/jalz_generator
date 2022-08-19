@@ -82,7 +82,7 @@
             url: baseUrl + url,
             data: data,
             success: function(response) {
-                swal(response);
+                alert(response);
             },
             error: function(response) {
                 alert("error with this method");
@@ -95,7 +95,7 @@
             url: baseUrl + url,
             data: data,
             success: function(response) {
-                swal(response);
+                alert(response);
                 $(button).click();
             },
             error: function(response) {
@@ -127,7 +127,7 @@
             contentType: false,
             dataType: 'html',
             success: function(response) {
-                swal(response);
+                alert(response);
             },
             error: function(response) {
                 alert("error with this method");
@@ -143,7 +143,7 @@
             contentType: false,
             dataType: 'html',
             success: function(response) {
-                swal(response);
+                alert(response);
                 $(target).click();
             },
             error: function(response) {

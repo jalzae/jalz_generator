@@ -150,7 +150,7 @@
                 url: "<?= base_url('master/console/generate') ?>",
                 data: data,
                 success: function(response) {
-                    swal("Berhasil");
+                    alert("Berhasil");
                 },
                 error: function(response) {
                     alert('methods error!!!');
@@ -166,6 +166,6 @@
             alert("copied");
         });
 
-       
+
     });
 </script>

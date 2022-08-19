@@ -71,7 +71,7 @@
                 url: "<?= base_url('master/faq/deletefaq') ?>",
                 data: data,
                 success: function(response) {
-                    swal(response);
+                    alert(response);
                     $("#faqs").click();
                 }
             });
@@ -88,7 +88,7 @@
                     desc_update: desc,
                 },
                 success: function(response) {
-                    swal(response);
+                    alert(response);
                     $("#faqs").click();
                 }
             });
