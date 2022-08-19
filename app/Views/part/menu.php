@@ -10,13 +10,6 @@
 
             </div>
         </li>
-        <li id="json" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard">
-                <i class="ri-dashboard-line me-1"></i> JSON Generator
-            </a>
-
-        </li>
-
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="ri-apps-2-line me-1"></i> Generator CRUD <div class="arrow-down"></div>

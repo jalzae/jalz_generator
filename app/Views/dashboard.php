@@ -565,8 +565,7 @@
 
 
                     <div class="row" id="content">
-
-
+                        <h1 style="text-align: center;">No Content Here</h1>
                     </div>
                     <!-- end row-->
 
