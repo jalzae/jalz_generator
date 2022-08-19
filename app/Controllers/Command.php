@@ -22,7 +22,7 @@ class Command extends BaseController
 		$cmd = $this->request->getVar('cmd');
 		$data = explode(",", $json);
 		$command = explode(" ", $cmd);
-
+		$paranoid = false;
 		if (empty($json)) {
 			return "Hey its empty request body";
 		}
@@ -42,6 +42,7 @@ class Command extends BaseController
 
 				if (!empty($command[3])) {
 					if ($command[3] == "paranoid") {
+						$paranoid = true;
 						$checked = $this->paranoid($checked);
 					}
 				}
@@ -54,13 +55,13 @@ class Command extends BaseController
 				if (empty($command[2])) {
 					return "Name Model result must be provided";
 				}
-				return $this->sequelize->resultSequelizeModel($checked, $command[2]);
+				return $this->sequelize->resultSequelizeModel($checked, $command[2], $paranoid);
 			}
 
 			//Sequelize Validation
 			else if ($command[1] == "validation") {
 				if (empty($command[2])) {
-					return "Name Model result must be provided";
+					return "Name Validation result must be provided";
 				}
 				return $this->sequelize->resultSequelizeModel($checked, $command[2]);
 			}
@@ -187,6 +188,7 @@ class Command extends BaseController
 			"comment"			=> "false",
 			"primmary_key"			=> "false",
 			"auto_increment" => "false",
+			"unique" => "false",
 		];
 		$entry_date = [
 			"name" => 'entry_date',
@@ -200,7 +202,7 @@ class Command extends BaseController
 			"foreign"			=> "false",
 			"comment"			=> "false",
 			"primmary_key"			=> "false",
-			"auto_increment" => "false",
+			"auto_increment" => "false",	"unique" => "false",
 		];
 		$update_date = [
 			"name" => 'update_date',
@@ -214,7 +216,7 @@ class Command extends BaseController
 			"foreign"			=> "false",
 			"comment"			=> "false",
 			"primmary_key"			=> "false",
-			"auto_increment" => "false",
+			"auto_increment" => "false",	"unique" => "false",
 		];
 		$delete_date = [
 			"name" => 'delete_date',
@@ -228,7 +230,7 @@ class Command extends BaseController
 			"foreign"			=> "false",
 			"comment"			=> "false",
 			"primmary_key"			=> "false",
-			"auto_increment" => "false",
+			"auto_increment" => "false",	"unique" => "false",
 		];
 
 		$entry_user = [
@@ -243,7 +245,7 @@ class Command extends BaseController
 			"foreign"			=> "false",
 			"comment"			=> "false",
 			"primmary_key"			=> "false",
-			"auto_increment" => "false",
+			"auto_increment" => "false",	"unique" => "false",
 		];
 		$update_user = [
 			"name" => 'update_user',
@@ -257,7 +259,7 @@ class Command extends BaseController
 			"foreign"			=> "false",
 			"comment"			=> "false",
 			"primmary_key"			=> "false",
-			"auto_increment" => "false",
+			"auto_increment" => "false",	"unique" => "false",
 		];
 		$delete_user = [
 			"name" => 'delete_user',
@@ -271,7 +273,7 @@ class Command extends BaseController
 			"foreign"			=> "false",
 			"comment"			=> "false",
 			"primmary_key"			=> "false",
-			"auto_increment" => "false",
+			"auto_increment" => "false",	"unique" => "false",
 		];
 		array_push($array, $status_delete);
 		array_push($array, $entry_date);
