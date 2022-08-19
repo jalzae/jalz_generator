@@ -27,8 +27,4 @@ class Test extends BaseController
 		return $this->respond($json, 200);
 	}
 
-	public function savejson()
-	{
-		//
-	}
 }

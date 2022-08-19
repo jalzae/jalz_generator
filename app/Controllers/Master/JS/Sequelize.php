@@ -87,6 +87,6 @@ class Sequelize extends BaseController
 		$limit = count($data['column']);
 		$data['limit'] = $limit;
 		$data['namespace'] = $namespace;
-		return view('sequelize/model', $data);
+		return view('sequelize/migration', $data);
 	}
 }
