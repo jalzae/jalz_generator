@@ -38,7 +38,7 @@ class Sequelize extends BaseController
 		return view('sequelize/route', $data);
 	}
 
-	public function index()
+	public function controller()
 	{
 		$db = $this->request->getVar('db');
 		$table = $this->request->getVar('table');
