@@ -23,32 +23,17 @@ class Home extends BaseController
 		return view('dashboard', $data);
 	}
 
-	public function sample_distinct()
+	public function sample_include()
 	{
 
-		$data = [
+		$data = $this->all->join('data_kelas');
+		$data['data'] = $this->all->include($data['data'], [
 			[
-				'id' => 1,
-				'nama' => 'burhan',
-			],
-			[
-				'id' => 2,
-				'nama' => 'burhan',
-			],
-			[
-				'id' => 2,
-				'nama' => 'adit',
-			],
-			[
-				'id' => 3,
-				'nama' => 'jarwo',
-			],
-		];
-		$data = distincData($data, 'nama');
-
-		echo '<pre>;';
-		print_r($data);
-		echo '</pre>;';
-		die();
+				'model' => 'data_siswa',
+				'on' => [
+					'id_kelas'
+				]
+			]
+		]);
 	}
 }

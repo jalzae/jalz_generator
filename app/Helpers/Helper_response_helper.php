@@ -40,7 +40,12 @@ function passwordhash($pass = "")
   return $pass;
 }
 
-
+/**
+ * Distinct Data
+ *
+ * @param array  $filtered    filtered must be array
+ * @param string  $string    String must be string
+ */
 function distincData($filtered, $string)
 {
 

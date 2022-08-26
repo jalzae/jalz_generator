@@ -8,27 +8,27 @@ use Throwable;
 
 class All extends Model
 {
-	public function table($table)
+	function table($table)
 	{
 		return $this->db->table($table);
 	}
 
-	public function getall($table)
+	function getall($table)
 	{
 		return $this->db->table($table)->get()->getResult();
 	}
 
-	public function getbyorder($table, $column, $opsi)
+	function getbyorder($table, $column, $opsi)
 	{
 		return $this->db->table($table)->orderBy($column, $opsi)->get()->getResult();
 	}
 
-	public function getrow($table, $data)
+	function getrow($table, $data)
 	{
 		return $this->db->table($table)->where($data)->get(1)->getRowArray();
 	}
 
-	public function put($table, $data)
+	function put($table, $data)
 	{
 
 		try {
@@ -40,12 +40,12 @@ class All extends Model
 		}
 	}
 
-	public function putAll($table, $data)
+	function putAll($table, $data)
 	{
 		return $this->db->table($table)->insertBatch($data);
 	}
 
-	public function patch($table, $data, $param, $id)
+	function patch($table, $data, $param, $id)
 	{
 		try {
 			$this->db->table($table)->update($data, [$param => $id]);
@@ -56,46 +56,117 @@ class All extends Model
 		}
 	}
 
-	public function patchAll($table, $data, $condition)
+	function patchAll($table, $data, $condition)
 	{
 		return $this->db->table($table)->update($data, $condition);
 	}
 
-	public function remove($table, $param, $id)
+	function remove($table, $param, $id)
 	{
 		return $this->db->table($table)->delete([$param => $id]);
 	}
 
-	public function removeAll($table, $id)
+	function removeAll($table, $id)
 	{
 		return $this->db->table($table)->delete($id);
 	}
 
-	public function get($table, $data)
+	function get($table, $data)
 	{
 		return $this->db->table($table)->where($data);
 	}
 
-	public function getdata($table, $data)
+	function getdata($table, $data)
 	{
 		return $this->db->table($table)->where($data)->get()->getResult();
 	}
 
-	public function getdatabyorder($table, $data, $column, $asc)
+	function getdatabyorder($table, $data, $column, $asc)
 	{
 		return $this->db->table($table)->where($data)->orderBy($column, $asc)->get()->getResult();
 	}
-	public function getjoin($table, $table2, $cond, $data)
+	function getjoin($table, $table2, $cond, $data)
 	{
 		return $this->db->table($table)->join($table2, $cond)->where($data);
 	}
 
-	public function getjoin2($table, $table2, $cond, $table3, $cond3, $data)
+	function getjoin2($table, $table2, $cond, $table3, $cond3, $data)
 	{
 		return $this->db->table($table)->join($table2, $cond)->join($table3, $cond3)->where($data);
 	}
 
-	public static function paging_all($array, $per_page)
+	function join($table, $select = '*', $join = [], $where = [], $orderby = [], $page = 1, $per_page = 10, $type = 'array')
+	{
+
+		if ($page == 1) {
+			$start = 0;
+		} else {
+			$start = ($page - 1) * $per_page;
+		}
+
+		$dataarray = [];
+
+		$builder = $this->db->table($table);
+		$builder->select($select);
+		$builder->where($where);
+
+		if (count($join) != 0) {
+			for ($i = 0; $i < count($join); $i++) {
+				$builder->join($join[$i]['model'], $join[$i]['on'], $join[$i]['type']);
+			}
+		}
+
+		if (count($orderby) != 0) {
+			$orderbys = '';
+			for ($i = 0; $i < count($orderby); $i++) {
+				$orderbys .= $orderby[$i] . ',';
+			}
+			$orderbys = substr($orderbys, 0, -1);
+			$builder->orderBy($orderbys);
+		}
+
+		$dataarray =	$builder->get($per_page, $start)->getResult($type);
+
+		$jumlah = $builder->countAllResults(false);
+
+		$data = [
+			'per_page' => $per_page,
+			'total_data' => $jumlah,
+			'total_page' => ceil($jumlah / $per_page),
+			'page' => $page,
+			'data' => $dataarray,
+		];
+		return $data;
+	}
+
+	/**
+	 * Distinct Data
+	 *
+	 * @param array|object  $data    data must be object or array
+	 * @param array|object  $join    join must be object or array
+	 * @param string  $type    String must be string
+	 */
+
+	function include($data, $join, $type = 'array')
+	{
+		$dataarray = [];
+		foreach ($data as $obj) {
+			for ($i = 0; $i < count($join); $i++) {
+
+				$where = [];
+				for ($j = 0; $j < count($join[$i]['on']); $j++) {
+					$where[$join[$i]['on'][$j]] = $obj[$join[$i]['on'][$j]];
+				}
+			
+				$obj[$join[$i]['model']] = $this->table($join[$i]['model'])->where($where)->get()->getResult($type);
+			}
+			array_push($dataarray, $obj);
+		}
+
+		return $dataarray;
+	}
+
+	function paging_all($array, $per_page)
 	{
 		$dataarray = array_chunk($array,  $per_page);
 		$data = [
@@ -119,7 +190,7 @@ class All extends Model
 		return $data;
 	}
 
-	function pagination($table, $where = [], $orderby = [], $include = [], $page = 1, $per_page = 10, $like = [], $orLike = [], $groupBy = [], $aliases = true, $distinct = '', $select = ['*'], $customSelect = '')
+	function pagination($table, $where = [], $orderby = [], $include = [], $aliases = true, $page = 1, $per_page = 10, $like = [], $orLike = [], $groupBy = [],  $distinct = '', $select = ['*'], $customSelect = '', $result = 'array')
 	{
 		if ($page == 1) {
 			$start = 0;
@@ -189,7 +260,7 @@ class All extends Model
 			}
 		}
 
-		$dataarray = $builder->get($per_page, $start)->getResult();
+		$dataarray = $builder->get($per_page, $start)->getResult($result);
 
 		if (count($include) != 0 && $aliases == true) {
 			// $dataarray = $this->includes($dataarray, $include);
