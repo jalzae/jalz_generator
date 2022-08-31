@@ -147,22 +147,32 @@ class All extends Model
 	 * @param string  $type    String must be string
 	 */
 
-	function include($data, $join, $type = 'array')
+	function include($data, $join,$orwhere=[], $type = 'array')
 	{
 		$dataarray = [];
 		foreach ($data as $obj) {
 			for ($i = 0; $i < count($join); $i++) {
+				$builder = $this->db->table($join[$i]['model']);
 
 				$where = [];
+				
 				for ($j = 0; $j < count($join[$i]['on']); $j++) {
 					$where[$join[$i]['on'][$j]] = $obj[$join[$i]['on'][$j]];
 				}
-			
-				$obj[$join[$i]['model']] = $this->table($join[$i]['model'])->where($where)->get()->getResult($type);
+
+				if (count($join[$i]['join']) != 0) {
+					for ($j = 0; $j < count($join[$i]['join']); $j++) {
+						$builder->join($join[$i]['join'][$j]['table'], $join[$i]['join'][$j]['on'], $join[$i][$j]['type']);
+					}
+				}
+
+				$builder->where($where);
+				$builder->where($orwhere);
+
+				$obj[$join[$i]['model']] = $builder->get()->getResult($type);
 			}
 			array_push($dataarray, $obj);
 		}
-
 		return $dataarray;
 	}
 
@@ -438,5 +448,74 @@ class All extends Model
 		);
 
 		return $result;
+	}
+
+	function entryAt($data, $user = '')
+	{
+		$today = date('Y-m-d H:i:s');
+		$data['entry_date'] = $today;
+		if ($user != '') {
+			$data['entry_user'] = $user;
+		}
+
+		return $data;
+	}
+
+	function updateAt($data, $user = '')
+	{
+		$today = date('Y-m-d H:i:s');
+		$data['update_date'] = $today;
+		if ($user != '') {
+			$data['entry_user'] = $user;
+		}
+		
+		return $data;
+	}
+
+	function restructureArr($arr)
+	{
+		$data = [];
+		$keys = array_keys($arr);
+		foreach ($keys as $obj) {
+			array_push($data, $arr[$keys]);
+		}
+		return $data;
+	}
+
+	function filtering($arr, $string, $key)
+	{
+		$result = array_filter($arr, function ($var) use ($string, $key) {
+			return ($var[$string] == $key);
+		});
+
+		return $result;
+	}
+
+	function runQuery($query)
+	{
+		$this->db->query($query);
+	}
+
+	function uploadImage($image, $ext, $path = 'assets/image/')
+	{
+		helper(['form', 'url', 'filesystem']);
+		$ext = '.' . $ext;
+		$random = date('YmdHis');
+
+		$alamat = ROOTPATH . $path;
+		$fulldirect = $path . $random . $ext;
+		directory_map($alamat, FALSE, TRUE);
+		$image->move($alamat,  $random . $ext);
+		
+		return $fulldirect;
+	}
+
+	function timestamp($data)
+	{
+		$today = date('Y-m-d H:i:s');
+		$data['entry_date'] = $today;
+		$data['update_date'] = $today;
+
+		return $data;
 	}
 }

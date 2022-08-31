@@ -25,15 +25,21 @@ class Home extends BaseController
 
 	public function sample_include()
 	{
-
 		$data = $this->all->join('data_kelas');
 		$data['data'] = $this->all->include($data['data'], [
 			[
 				'model' => 'data_siswa',
 				'on' => [
 					'id_kelas'
-				]
+				],
+				'join'=>[]
 			]
 		]);
+
+			echo '<pre>;';
+		print_r($data);
+		echo '</pre>;';
+		die();
+
 	}
 }

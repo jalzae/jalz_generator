@@ -1,0 +1,58 @@
+<?php
+
+
+
+class Setup
+{
+  public $host = "localhost";
+  public $root = "root";
+  public $password = "";
+  public $db = "mysql";
+
+
+  function __construct()
+  {
+    $this->mysqli = new mysqli($this->host, $this->root, $this->password, $this->db);
+  }
+
+  public function createDb()
+  {
+    if ($this->mysqli->connect_errno) {
+      echo "Failed to connect to MySQL: " . $this->mysqli->connect_error;
+      exit();
+    }
+
+    // Perform query
+    if ($this->mysqli->query("CREATE DATABASE `idcosmart`
+    DEFAULT CHARACTER SET = 'utf8mb4';")) {
+      echo "Sukses";
+    }
+
+    $this->mysqli->close();
+  }
+
+  public function deleteDb()
+  {
+    if ($this->mysqli->connect_errno) {
+      echo "Failed to connect to MySQL: " . $this->mysqli->connect_error;
+      exit();
+    }
+
+    // Perform query
+    if ($this->mysqli->query("DROP DATABASE IF EXISTS idcosmart;")) {
+      echo "Deleted";
+    }
+
+    $this->mysqli->close();
+  }
+}
+
+$command = new Setup();
+
+if ($argv[1] == "create") {
+  $command->createDb();
+} else if ($argv[1] == "delete") {
+  $command->deleteDb();
+} else {
+  echo "Methods not found !";
+}

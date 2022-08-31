@@ -38,6 +38,10 @@ class Ci4 extends Model
 				echo '"auto_increment" =>true';
 			}
 
+			if ($obj['unique'] != 'false') {
+				echo '"unique" =>true';
+			}
+
 			if ($obj['primmary_key'] != 'false') {
 				$primmaryKey = $obj['name'];
 			}
