@@ -195,7 +195,7 @@ class Command extends BaseController
 			"name" => 'entry_date',
 			"type" => 'datetime',
 			"contraits" => 0,
-			"null"			=> "false",
+			"null"			=> "true",
 			"default" => "CURRENT_TIMESTAMP",
 			//NOTE enum choice use / and default will direct value so check it first 
 			"enum" =>			"false",
@@ -209,7 +209,7 @@ class Command extends BaseController
 			"name" => 'update_date',
 			"type" => 'datetime',
 			"contraits" => 0,
-			"null"			=> "false",
+			"null"			=> "true",
 			"default" => "CURRENT_TIMESTAMP",
 			//NOTE enum choice use / and default will direct value so check it first 
 			"enum" =>			"false",
@@ -238,7 +238,7 @@ class Command extends BaseController
 			"name" => 'entry_user',
 			"type" => 'varchar',
 			"contraits" => 200,
-			"null"			=> "false",
+			"null"			=> "true",
 			"default" => "false",
 			//NOTE enum choice use / and default will direct value so check it first 
 			"enum" =>			"false",
@@ -252,7 +252,7 @@ class Command extends BaseController
 			"name" => 'update_user',
 			"type" => 'varchar',
 			"contraits" => 200,
-			"null"			=> "false",
+			"null"			=> "true",
 			"default" => "false",
 			//NOTE enum choice use / and default will direct value so check it first 
 			"enum" =>			"false",

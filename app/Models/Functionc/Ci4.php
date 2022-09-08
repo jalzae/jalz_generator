@@ -35,11 +35,11 @@ class Ci4 extends Model
 			}
 
 			if ($obj['auto_increment'] != 'false') {
-				echo '"auto_increment" =>true';
+				echo '"auto_increment" =>true,';
 			}
 
 			if ($obj['unique'] != 'false') {
-				echo '"unique" =>true';
+				echo '"unique" =>true,';
 			}
 
 			if ($obj['primmary_key'] != 'false') {
