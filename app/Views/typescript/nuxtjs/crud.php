@@ -1,5 +1,6 @@
-export default {
-    methods: {
+import { defineComponent } from 'vue'
+export default defineComponent({
+methods: {
 getall<?= str_replace('_', '', $table) ?>(header){
 <?php
 $store = '$store';
@@ -49,4 +50,4 @@ echo 'return this.$axios.$delete("' . $url . '/delete/"+id, {
 ?>
 },
 }
-}
+})
