@@ -1,7 +1,7 @@
 import { defineComponent } from 'vue'
 export default defineComponent({
 methods: {
-getall<?= str_replace('_', '', $table) ?>(header){
+getall<?= str_replace('_', '', $table) ?>(header:any){
 <?php
 $store = '$store';
 echo 'return this.$axios.$get("' . $url . '/read", {
@@ -10,7 +10,7 @@ echo 'return this.$axios.$get("' . $url . '/read", {
 ?>
 },
 
-add<?= str_replace('_', '', $table) ?>(data,header){
+add<?= str_replace('_', '', $table) ?>(data:any,header:any){
 <?php
 echo 'return this.$axios.$post("' . $url . '/create", data, {
     headers: header
@@ -18,7 +18,7 @@ echo 'return this.$axios.$post("' . $url . '/create", data, {
 ?>
 },
 
-update<?= str_replace('_', '', $table) ?>(data,header){
+update<?= str_replace('_', '', $table) ?>(data:any,header:any){
 <?php
 echo 'return this.$axios.$post("' . $url . '/update", data, {
     headers: header
@@ -26,7 +26,7 @@ echo 'return this.$axios.$post("' . $url . '/update", data, {
 ?>
 },
 
-updatedynamic<?= str_replace('_', '', $table) ?>(data,header){
+updatedynamic<?= str_replace('_', '', $table) ?>(data:any,header:any){
 <?php
 echo 'return this.$axios.$post("' . $url . '/update_dynamic", data, {
     headers: header
@@ -34,7 +34,7 @@ echo 'return this.$axios.$post("' . $url . '/update_dynamic", data, {
 ?>
 },
 
-detail<?= str_replace('_', '', $table) ?>(id,header){
+detail<?= str_replace('_', '', $table) ?>(id:any,header:any){
 <?php
 echo 'return this.$axios.$get("' . $url . '/detail/"+id, {
     headers: header
@@ -42,7 +42,7 @@ echo 'return this.$axios.$get("' . $url . '/detail/"+id, {
 ?>
 },
 
-delete<?= str_replace('_', '', $table) ?>(id,header){
+delete<?= str_replace('_', '', $table) ?>(id:any,header:any){
 <?php
 echo 'return this.$axios.$delete("' . $url . '/delete/"+id, {
     headers: header
