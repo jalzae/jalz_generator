@@ -79,7 +79,7 @@
 </div>
 
 <script type='text/javascript'>
-    $(document).ready(function() {
+    $(document).ready(function(event) {
 
         var hasil = $("#hasil").val();
         $(".submitbutton").click(function(e) {
@@ -112,13 +112,11 @@
             document.execCommand('copy');
             alert("copied");
         });
-
-        window.addEventListener('keyup', function(event) {
-            if (event.keyCode === 116) {
-                $(".submitbutton").click();
-            } else if (event.keyCode == 117) {
-                $("#copyit").click();
-            }
-        });
+        event.preventDefault();
+        if (event.keyCode === 116) {
+            $(".submitbutton").click();
+        } else if (event.keyCode == 117) {
+            $("#copyit").click();
+        }
     });
 </script>

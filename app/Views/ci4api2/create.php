@@ -25,7 +25,7 @@ echo 'if ($this->validation->run($data, "' . $table . '") == false) {
     ];
     return $this->respond($response, 400);
 } else {';
-echo '&#13;$save=$this->model->table("' . $table . '")->insert($data);';
+echo '&#13;$save=$this->model->put("' . $table . ',$data);';
 echo '&#13;if($save){
     $message = [
         "status"=>200,
