@@ -9,6 +9,15 @@ echo 'return this.$axios.$get("' . $url . '/read", {
 ?>
 },
 
+getpage<?= str_replace('_', '', $table) ?>(data,header){
+<?php
+$store = '$store';
+echo 'return this.$axios.$get("' . $url . '/pagination"+data, {
+    headers: header
+});';
+?>
+},
+
 add<?= str_replace('_', '', $table) ?>(data,header){
 <?php
 echo 'return this.$axios.$post("' . $url . '/create", data, {

@@ -147,7 +147,7 @@ class All extends Model
 	 * @param string  $type    String must be string
 	 */
 
-	function include($data, $join,$orwhere=[], $type = 'array')
+	function include($data, $join, $orwhere = [], $type = 'array')
 	{
 		$dataarray = [];
 		foreach ($data as $obj) {
@@ -155,7 +155,7 @@ class All extends Model
 				$builder = $this->db->table($join[$i]['model']);
 
 				$where = [];
-				
+
 				for ($j = 0; $j < count($join[$i]['on']); $j++) {
 					$where[$join[$i]['on'][$j]] = $obj[$join[$i]['on'][$j]];
 				}
@@ -176,26 +176,41 @@ class All extends Model
 		return $dataarray;
 	}
 
-	function paging_all($array, $per_page)
+	function paging_all(string $table = '', int $page = 1, int $per_page = 10, array $where = [])
 	{
-		$dataarray = array_chunk($array,  $per_page);
+		$builder = $this->db->table($table);
+
+		if (count($where) > 0) {
+			$builder->where($where);
+		}
+
+		if ($page == 1) {
+			$start = 0;
+		} else {
+			$start = ($page - 1) * $per_page;
+		}
+		$total = $builder->countAllResults(false);
+		$array = $builder->get($per_page, $start)->getResult('array');
+
 		$data = [
-			'per_page' => $per_page,
-			'total_data' => count($array),
-			'total_page' => ceil(count($array) / $per_page),
-			'data' => $dataarray,
+			'per_page' => (int) $per_page,
+			'page' => (int) $page,
+			'total_data' => (int) $total,
+			'total_page' => (int) ceil($total / $per_page),
+			'data' => $array,
 		];
 		return $data;
 	}
 
-	function paging($array, $start, $per_page)
+	function paging($table, $array, $page, $per_page)
 	{
-		$dataarray = array_slice($array, $start, $per_page);
+		$total = $this->db->table($table)->countAllResults(false);
 		$data = [
 			'per_page' => $per_page,
-			'total_data' => count($array),
-			'total_page' => ceil(count($array) / $per_page),
-			'data' => $dataarray,
+			'page' => $page,
+			'total_data' => $total,
+			'total_page' => ceil($total / $per_page),
+			'data' => $array,
 		];
 		return $data;
 	}
@@ -417,22 +432,64 @@ class All extends Model
 		return $columns;
 	}
 
-	function includes($result, $include)
+	function includes($array, $include)
 	{
+		$array = json_decode(json_encode($array), true);
+		// $table,$where
+		// example $include=[['table','join on ','one/many']]
+		$datas = [];
 
-		//Hasilnya diloop
-		$result = json_decode(json_encode($result), true);
+		$results = [];
+		//separate include join on 
+		foreach ($include as $obj) {
+			$params = [];
+			$key = explode("=", $obj['on']);
+			$keys = $key[0];
+			$filter = $key[1];
+			foreach ($array as $obj1) {
+				array_push($params, $obj1[$keys]);
+			}
 
-		$filtering = $this->distinctIt($result);
+			//where in by filterkey
+			$builder = $this->db->table($obj['table'])->whereIn($filter, $params);
 
-		//includes dan push ke id sebagai batch array 
-		//TODO foreach filtering kemudian cari value dari kolom keys yang sama
-		foreach ($filtering as $index => $value) {
-			$colors = array_column($result, 'fav_color');
-			$found_key = array_search('blue', $colors);
+			if (count($obj['join']) > 0) {
+				foreach ($obj['join'] as $obj2) {
+					$builder->join($obj2['table'], $obj2['on'], $obj['type']);
+				}
+			}
+
+			$results[$obj['table']] = $builder->get()->getResult('array');
 		}
 
-		return $filtering;
+
+		//foreach array 
+		foreach ($array as $obj) {
+			foreach ($include as $obj1) {
+				$key = explode("=", $obj1['on']);
+				$keys = $key[0];
+				$filter = $key[1];
+				$obj[$obj1['table']] = $this->filtering($results[$obj1['table']], $filter, $obj[$keys]);
+
+				$structured = [];
+				foreach ($obj[$obj1['table']] as $obj2) {
+					array_push($structured, $obj2);
+				}
+
+				if ($obj1['type'] == 'one') {
+					if (count($structured) > 0) {
+						$obj[$obj1['table']]	= $structured[0];
+					} else {
+						$obj[$obj1['table']]	= null;
+					}
+				} else {
+					$obj[$obj1['table']] = $structured;
+				}
+			}
+			array_push($datas, $obj);
+		}
+
+		return $datas;
 	}
 
 	function distinctIt($filtered)
@@ -468,7 +525,7 @@ class All extends Model
 		if ($user != '') {
 			$data['entry_user'] = $user;
 		}
-		
+
 		return $data;
 	}
 
@@ -506,7 +563,7 @@ class All extends Model
 		$fulldirect = $path . $random . $ext;
 		directory_map($alamat, FALSE, TRUE);
 		$image->move($alamat,  $random . $ext);
-		
+
 		return $fulldirect;
 	}
 
