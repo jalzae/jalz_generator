@@ -10,7 +10,9 @@ header('x-brand')
 <?php
 $limit = count($column);
 for ($i = 1; $i < $limit; $i++) {
-  echo 'body("' . $column[$i]['Field'] . '")';
+  echo "body('";
+  echo $column[$i]['Field'];
+  echo "')";
   if ($column[$i]['Null'] == "NO") {
     echo ".exists()";
   } else {
@@ -19,17 +21,25 @@ for ($i = 1; $i < $limit; $i++) {
 
   echo ".notEmpty()";
 
-  if ($column[$i]['Type'] != 'char') {
+  if (strpos($column[$i]['Type'], 'char(36)') == 0) {
     echo ".isUUID()";
-  } else   if ($column[$i]['Type'] != 'varchar') {
+  } else   if (strpos($column[$i]['Type'], 'varchar') == 0) {
     echo ".isString()";
-  } else   if ($column[$i]['Type'] != 'text') {
+  } else   if (strpos($column[$i]['Type'], 'text') == 0) {
     echo ".isArray()";
-  } else   if ($column[$i]['Type'] != 'tinyint') {
+  } else   if ($column[$i]['Type'] == 'tinyint(1)') {
     echo ".isBoolean()";
-  } else   if ($column[$i]['Type'] != 'int') {
+  } else   if ($column[$i]['Type'] == 'datetime') {
+    echo ".isString()";
+  } else   if (strpos($column[$i]['Type'], 'enum') == 0) {
+    $str = $column[$i]['Type'];
+    $from = '(';
+    $to = ')';
+    $sub = substr($str, strpos($str, $from) + strlen($from), strlen($str));
+    echo ".isString().inIn([" .  substr($sub, 0, strpos($sub, $to)) . "])";
+  } else   if (strpos($column[$i]['Type'], 'int') == 0) {
     echo ".isNumeric()";
-  } else   if ($column[$i]['Type'] != 'float') {
+  } else   if (strpos($column[$i]['Type'], 'float') == 0) {
     echo ".isNumeric()";
   }
 
@@ -74,7 +84,9 @@ param('id')
 <?php
 $limit = count($column);
 for ($i = 0; $i < $limit; $i++) {
-  echo 'body("' . $column[$i]['Field'] . '")';
+  echo "body('";
+  echo $column[$i]['Field'];
+  echo "')";
   if ($column[$i]['Null'] == "NO") {
     echo ".exists()";
   } else {
@@ -83,17 +95,25 @@ for ($i = 0; $i < $limit; $i++) {
 
   echo ".notEmpty()";
 
-  if ($column[$i]['Type'] != 'char') {
+  if (strpos($column[$i]['Type'], 'char(36)') == 0) {
     echo ".isUUID()";
-  } else   if ($column[$i]['Type'] != 'varchar') {
+  } else   if (strpos($column[$i]['Type'], 'varchar') == 0) {
     echo ".isString()";
-  } else   if ($column[$i]['Type'] != 'text') {
+  } else   if (strpos($column[$i]['Type'], 'text') == 0) {
     echo ".isArray()";
-  } else   if ($column[$i]['Type'] != 'tinyint') {
+  } else   if ($column[$i]['Type'] == 'tinyint(1)') {
     echo ".isBoolean()";
-  } else   if ($column[$i]['Type'] != 'int') {
+  } else   if ($column[$i]['Type'] == 'datetime') {
+    echo ".isString()";
+  } else   if (strpos($column[$i]['Type'], 'enum') == 0) {
+    $str = $column[$i]['Type'];
+    $from = '(';
+    $to = ')';
+    $sub = substr($str, strpos($str, $from) + strlen($from), strlen($str));
+    echo ".isString().inIn([" .  substr($sub, 0, strpos($sub, $to)) . "])";
+  } else   if (strpos($column[$i]['Type'], 'int') == 0) {
     echo ".isNumeric()";
-  } else   if ($column[$i]['Type'] != 'float') {
+  } else   if (strpos($column[$i]['Type'], 'float') == 0) {
     echo ".isNumeric()";
   }
 

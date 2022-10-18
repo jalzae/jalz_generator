@@ -1,3 +1,5 @@
+const flaverr = require('flaverr');
+
 const { <?= $namespace ?> } = require('../models');
 
 const create = async (data, transaction) => {
@@ -29,7 +31,7 @@ status: false,
 err,
 };
 }
-}
+};
 
 const update = async (data, transaction) => {
 try {
@@ -49,7 +51,7 @@ for ($i = 0; $i < $limit; $i++) {
 ?>
 };
 
-const respons = await <?= $namespace ?>.update(payload, { where: { id } }, transaction);
+const respons = await <?= $namespace ?>.update(payload, { where: { id },returning:true }, transaction);
 
 return {
 status: true,
@@ -61,7 +63,7 @@ status: false,
 err,
 };
 }
-}
+};
 
 const findAll = async (data = { params: {}, pagination: {} }, transaction) => {
 try {
@@ -75,80 +77,73 @@ const { count, rows } = await <?= $namespace ?>.findAndCountAll({
 where,
 offset: (page - 1) * per_page,
 limit: per_page,
-transaction
+transaction,
 });
+if (count < 1) throw flaverr('E_NOT_FOUND', Error(`<?= $namespace ?> not found`)); 
 
-return {
-status: true,
-data: {
-data: rows,
-count,
-page,
-per_page,
-},
-};
-} catch (err) {
-return {
-status: false,
-err,
-};
-}
-}
+const result=paginate({
+   data: rows, count, page, per_page,
+ });
+ return { 
+  status: true, data: result, 
+}; } 
+catch (err) { 
+  return { status: false, err, };
+ }
+ };
+ 
+const findById=async (id, transaction)=> {
+  try {
+  const respons = await <?= $namespace ?>.findOne({ where: { id } }, transaction);
 
-const findById = async (id, transaction) => {
-try {
+  if (respons == null) {
+  return {
+  status: false,
+  data: respons,
+  message: `not found ID:${id} `,
+  };
+  }
 
-const respons = await <?= $namespace ?>.findOne({ where: { id } }, transaction);
+  return {
+  status: true,
+  data: respons,
+  };
+  } catch (err) {
+  return {
+  status: false,
+  err,
+  };
+  }
+  };
 
-if (respons == null) {
-return {
-status: false,
-data: respons,
-message: `not found ID:${id} `
-};
-}
+  const deleteById = async (id, transaction) => {
+  try {
+  const respons = await <?= $namespace ?>.destroy({ where: { id } }, transaction);
 
-return {
-status: true,
-data: respons,
-};
-} catch (err) {
-return {
-status: false,
-err,
-};
-}
-}
+  if (respons == 0) {
+  return {
+  status: false,
+  data: respons,
+  message: `not found ID:${id} to delete`,
+  };
+  }
 
-const deleteById = async (id, transaction) => {
-try {
+  return {
+  status: true,
+  data: respons,
+  };
+  } catch (err) {
+  return {
+  status: false,
+  err,
+  };
+  }
+  };
 
-const respons = await <?= $namespace ?>.destroy({ where: { id } }, transaction);
-
-if (respons == 0) {
-return {
-status: false,
-data: respons,
-message: `not found ID:${id} to delete`
-};
-}
-
-return {
-status: true,
-data: respons,
-};
-} catch (err) {
-return {
-status: false,
-err,
-};
-}
-}
-
-module.exports = {
-create,
-update,
-findAll,
-findById,
-deleteById,
-};
+  module.exports = {
+  create,
+  update,
+  findAll,
+  findById,
+  deleteById,
+  };

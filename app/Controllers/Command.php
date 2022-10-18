@@ -120,7 +120,7 @@ class Command extends BaseController
 			$exploded = explode(":", $obj);
 			$name = trim($exploded[0]);
 
-			if (trim($exploded[1]) == "string" || trim($exploded[1]) == "int" || trim($exploded[1]) == "float" || trim($exploded[1]) == "uuid" || trim($exploded[1]) == "dec" || trim($exploded[1]) == "enum" || trim($exploded[1]) == "varchar" || trim($exploded[1]) == "char" || trim($exploded[1]) == "bool" || trim($exploded[1]) == "date" || trim($exploded[1]) == "datetime" || trim($exploded[1]) == "time" || trim($exploded[1]) == "text" || trim($exploded[1]) == "tinyint" || trim($exploded[1]) == "longtext") {
+			if (trim($exploded[1]) == "string" || trim($exploded[1]) == "int" || trim($exploded[1]) == "float" || trim($exploded[1]) == "uuid" || trim($exploded[1]) == "dec" || trim($exploded[1]) == "enum" || trim($exploded[1]) == "varchar" || trim($exploded[1]) == "char" || trim($exploded[1]) == "bool" || trim($exploded[1]) == "date" || trim($exploded[1]) == "datetime" || trim($exploded[1]) == "time" || trim($exploded[1]) == "text" || trim($exploded[1]) == "tinyint" || trim($exploded[1]) == "longtext" || trim($exploded[1]) == "json") {
 				$type = $exploded[1];
 				$contraits = 0;
 				$status = count($exploded);
@@ -148,7 +148,7 @@ class Command extends BaseController
 				"null" => (strpos($obj, 'null') != false ?  'true' : 'false'),
 				"default" => (strpos($obj, 'default') != false ?  $this->getStringBetween($obj, '(', ')') : 'false'),
 				//NOTE enum choice use / and default will direct value so check it first 
-				"enum" => (strpos($obj, 'enum') != false ?  $this->getStringBetween($obj, '[', ']') : 'false'),
+				"enum" => (strpos($obj, 'enum') != false ?  str_replace('/', ',', ($this->getStringBetween($obj, '[', ']'))) : 'false'),
 				//NOTE Foreign key access with dots, so make it like student.id it will be produce table:student,column:id
 				"foreign" => (strpos($obj, 'foreign') != false ? $this->getStringBetween($obj, '{', '}') : 'false'),
 				"comment" => (strpos($obj, 'comment') != false ? $this->getStringBetween($obj, '`', '`') : 'false'),

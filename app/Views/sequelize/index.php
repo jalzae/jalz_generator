@@ -7,7 +7,7 @@ const library = {};
 library.create = async (req, res, next) => {
 try {
 const brand_id = req.headers['x-brand'];
-data = {}
+data = {};
 data.body = req.body;
 data.body.brand_id = brand_id;
 
@@ -35,7 +35,7 @@ return next(err);
 library.update = async (req, res, next) => {
 try {
 const brand_id = req.headers['x-brand'];
-data = {}
+data = {};
 const { id } = req.body;
 data.body = req.body;
 data.body.brand_id = brand_id;
@@ -47,7 +47,7 @@ if (!transaction.status) {
 throw transaction.err;
 }
 
-const resp = await repository.findById(id, transaction.data)
+const resp = await repository.findById(id, transaction.data);
 
 if (!resp.status) {
 return res.json(resp);
@@ -69,7 +69,7 @@ return next(err);
 
 library.deleteById = async (req, res, next) => {
 try {
-data = {}
+data = {};
 const { id } = req.params;
 
 const transaction = await transactionRepo.Create();

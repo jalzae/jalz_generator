@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const validate = require('../app/middlewares/validation');
 const controller = require('../app/controllers/<?= $table ?>');
@@ -10,7 +11,6 @@ validationRules.Create(),
 validate,
 controller.create,
 );
-
 
 router.get(
 '/',
@@ -39,7 +39,6 @@ validationRules.Delete(),
 validate,
 controller.deleteById,
 );
-
 
 const routeProps = {
 route: router,

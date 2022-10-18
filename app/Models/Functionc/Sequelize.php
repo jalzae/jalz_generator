@@ -34,6 +34,9 @@ class Sequelize extends Model
 			} else if ($obj['type'] == "enum") {
 				echo "type : Sequelize.ENUM(" . str_replace('/', ',', $obj['enum']) . "),
 				";
+			} else if ($obj['type'] == "json") {
+				echo "type : Sequelize.TEXT('LONG'),
+				";
 			}
 
 			//Define Default Value or not 
@@ -96,6 +99,9 @@ class Sequelize extends Model
 				";
 			} else if ($obj['type'] == "enum") {
 				echo "type : DataTypes.ENUM(" . str_replace('/', ',', $obj['enum']) . "),
+				";
+			} else if ($obj['type'] == "json") {
+				echo "type : DataTypes.TEXT('LONG'),
 				";
 			}
 
