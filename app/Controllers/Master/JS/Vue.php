@@ -15,6 +15,7 @@ class Vue extends BaseController
 	{
 		$db = $this->request->getVar('db');
 		$table = $this->request->getVar('table');
+		$data['namespace'] = $this->request->getVar('namespace');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
 		return view('vue/add', $data);
@@ -24,6 +25,7 @@ class Vue extends BaseController
 	{
 		$db = $this->request->getVar('db');
 		$table = $this->request->getVar('table');
+		$data['namespace'] = $this->request->getVar('namespace');
 		$data['table'] = $table;
 		$data['column'] = $this->cmd->show_column($db, $table);
 		return view('vue/edit', $data);

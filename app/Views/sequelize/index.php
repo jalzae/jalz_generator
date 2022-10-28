@@ -36,7 +36,7 @@ library.update = async (req, res, next) => {
 try {
 const brand_id = req.headers['x-brand'];
 data = {};
-const { id } = req.body;
+const { id } = req.params;
 data.body = req.body;
 data.body.brand_id = brand_id;
 
