@@ -27,12 +27,16 @@
                             <div class="form-group">
                                 <select id="my-select" class="form-control typenya" name="my-select">
                                     <option selected value="text">Text</option>
+                                    <option value="number">Number</option>
+                                    <option value="readonly">Read Only</option>
                                     <option value="email">Email</option>
                                     <option value="password">Password</option>
                                     <option value="textarea">Textarea</option>
                                     <option value="hidden">Hidden</option>
                                     <option value="select">Select</option>
-                                    <option value="datetime">Datepicker</option>
+                                    <option value="datetime-local">Datepicker</option>
+                                    <option value="date">Date</option>
+                                    <option value="time">Time</option>
                                     <option value="file">File</option>
                                 </select>
                             </div>
@@ -101,8 +105,14 @@
                                     <option value="Yes">Yes</option>
                                     <option selected value="No">No</option>
                                 </select>
+                            </div>
                         </td>
                         <td style="display: none;">No</td>
+                        <td>
+
+                            <input type="text" class="extensionnya<?= $i ?>" />
+
+                        </td>
 
                     </tr>
                 <?php
@@ -133,8 +143,14 @@
             </div>
         </div>
 
+        <div class="form-group mb-3">
+
+            <input type="text" name="argument" id="inputargument" class="form-control" value="" required="required" pattern="" title="">
+
+        </div>
+
         <div class="form-group">
-            <button type="button" class="submitbutton btn btn-primary">Submit</button>
+            <button type="button" class="submitbutton btn btn-primary form-control">Submit</button>
         </div>
     </div>
 </div>
@@ -173,6 +189,7 @@
                     };
                 }
             }
+
         });
         $(".requirenya").change(function(e) {
             var table = document.getElementById("details"),
@@ -193,6 +210,7 @@
                 }
             }
         });
+
         $(".optionnya").change(function(e) {
             var table = document.getElementById("details"),
                 rIndex, cIndex;
@@ -234,6 +252,7 @@
 
         $(".submitbutton").click(function(e) {
             e.preventDefault();
+            const args = $("#inputargument").val();
             var table = document.getElementById("details");
             var tableArr = {
                 table: [],
@@ -245,8 +264,9 @@
                     name: table.rows[i].cells[1].innerHTML,
                     type: table.rows[i].cells[5].innerHTML,
                     status: table.rows[i].cells[6].innerHTML,
-                    write: table.rows[i].cells[7].innerHTML,
+                    write: args == 'write_all' ? 'yes' : table.rows[i].cells[7].innerHTML,
                     sort: table.rows[i].cells[9].innerHTML,
+                    custom: $('.extensionnya' + (parseInt(i) - 1)).val(),
                 });
             }
             tableArr.feature.push(feature);
