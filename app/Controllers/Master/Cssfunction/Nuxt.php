@@ -20,7 +20,7 @@ class Nuxt extends BaseController
 		foreach ($table as $obj) {
 			$label = ucwords(str_replace("_", " ", (string)$obj['id']));
 			if ($obj['write'] == 'yes')
-				$forms .= $obj['id'] . ',';
+				$forms .= "'".$obj['id'] . "',";
 			$formatname .= $label;
 		}
 		echo "header:[" . $forms . "],";
@@ -66,16 +66,16 @@ class Nuxt extends BaseController
 		$data = json_decode(file_get_contents('php://input'), true);
 
 		$table = $data['table'];
-		$forms = '';
+		$forms = "";
 		foreach ($table as $obj) {
 			if ($obj['write'] == 'yes')
-				$forms .= $obj['id'] . ',';
+				$forms .= $obj['id'] . ":'',";
 
 			if ($obj['type'] == 'file')
-				$forms .= 'ext,';
+				$forms .= "ext:'',";
 		}
 
-		echo "forms:[" . $forms . "],";
+		echo "forms:{" . $forms . "},";
 		echo "form:[";
 		foreach ($table as $obj) {
 			if ($obj['write'] == 'yes') {
@@ -104,8 +104,9 @@ class Nuxt extends BaseController
           type: '" . $obj['type'] . "',
           label: '" . $obj['label'] . "',";
 				}
-				echo "}";
+				echo "},";
 			}
 		}
+		echo "]";
 	}
 }
