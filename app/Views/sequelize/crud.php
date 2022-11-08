@@ -65,7 +65,7 @@ err,
 }
 };
 
-const findAll = async (data = { params: {}, pagination: {} }, transaction) => {
+const findAll = async (data = { params: {}, pagination: {} }) => {
 try {
 const { params, pagination } = data;
 const where = {};
@@ -73,26 +73,21 @@ const where = {};
 const page = pagination.page ? Number.parseInt(pagination.page) : 1;
 const per_page = pagination.per_page ? Number.parseInt(pagination.per_page) : 10;
 
+<?php
+for ($i = 1; $i < $limit; $i++) {
+  echo 'if(params.' . $column[$i]['Field'] . '){';
+  echo 'where.' . $column[$i]['Field'] . '=params.' . $column[$i]['Field'] . ';';
+  echo "}";
+}
+?>
+
 const { count, rows } = await <?= $namespace ?>.findAndCountAll({
 where,
 offset: (page - 1) * per_page,
 limit: per_page,
-transaction,
-});
-if (count < 1) throw flaverr('E_NOT_FOUND', Error(`<?= $namespace ?> not found`)); 
 
-const result=paginate({
-   data: rows, count, page, per_page,
- });
- return { 
-  status: true, data: result, 
-}; } 
-catch (err) { 
-  return { status: false, err, };
- }
- };
- 
-const findById=async (id, transaction)=> {
+});
+if (count < 1) throw flaverr('E_NOT_FOUND', Error(`<?= $namespace ?> not found`)); const result=paginate({ data: rows, count, page, per_page, }); return { status: true, data: result, }; } catch (err) { return { status: false, err, }; } }; const findById=async (id, transaction)=> {
   try {
   const respons = await <?= $namespace ?>.findOne({ where: { id } }, transaction);
 

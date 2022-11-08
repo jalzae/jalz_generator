@@ -53,7 +53,7 @@ if (!resp.status) {
 return res.json(resp);
 }
 
-const response = await repository.update(data.body, transaction.data);
+const response = await repository.update(id,data.body, transaction.data);
 
 if (!response.status) {
 await transactionRepo.Rollback(transaction.data);
@@ -92,11 +92,7 @@ const { page, per_page } = req.query;
 const brand_id = req.headers['x-brand'];
 const pagination = { page, per_page };
 
-const transaction = await transactionRepo.Create();
 
-if (!transaction.status) {
-throw transaction.err;
-}
 
 const response = await repository.findAll({
 params: {
@@ -104,7 +100,7 @@ params: {
 brand_id,
 },
 pagination,
-}, transaction.data);
+});
 return success(res, 200, response);
 } catch (err) {
 return next(err);
@@ -115,13 +111,9 @@ try {
 
 const { id } = req.params;
 // start transaction
-const transaction = await transactionRepo.Create();
 
-if (!transaction.status) {
-throw transaction.err;
-}
 
-const response = await repository.findById(id, transaction.data);
+const response = await repository.findById(id);
 
 return success(res, 200, response);
 } catch (err) {
