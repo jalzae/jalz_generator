@@ -5,11 +5,19 @@ protected $table = "' . $table . '";
 protected $primaryKey = "' . $column[0]['Field'] . '";
 protected $useAutoIncrement = true;
 protected $insertID = 1;
-protected $returnType = "object";
-protected $useSoftDeletes = false;
-protected $protectFields = false;
-protected $allowedFields = ["*"];
-';
+protected $returnType = "App\Entities\"' . ucfirst($table) . '";
+protected $useSoftDeletes = true;
+protected $useTimestamps = true;
+protected $allowedFields = [
+    ';
+foreach ($column as $obj) {
+    echo '"' . $obj['Field'] . '"';
+}
+echo '
+];
+protected $createdField  = "' . $table . '_createdat";
+    protected $updatedField  = "' . $table . '_updatedat";
+    protected $deletedField  = "' . $table . '_deletedat";';
 
 foreach ($column as $obj) {
     echo "protected $" . str_replace('_', '', $obj['Field']) . ";";

@@ -93,6 +93,15 @@ class Ci4api extends BaseController
 		$data['column'] = $this->cmd->show_column($db, $table);
 		return view('ci4api/model', $data);
 	}
+	public function entity()
+	{
+		$db = $this->request->getVar('db');
+		$table = $this->request->getVar('table');
+		$data['namespace'] = ucfirst($this->request->getVar('namespace'));
+		$data['table'] = $table;
+		$data['column'] = $this->cmd->show_column($db, $table);
+		return view('ci4api/entity', $data);
+	}
 
 	public function controller()
 	{
