@@ -11,7 +11,7 @@ protected $useTimestamps = true;
 protected $allowedFields = [
     ';
 foreach ($column as $obj) {
-    echo '"' . $obj['Field'] . '"';
+    echo '"' . $obj['Field'] . '",';
 }
 echo '
 ];
