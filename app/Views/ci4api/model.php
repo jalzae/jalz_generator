@@ -10,10 +10,12 @@ protected $useSoftDeletes = true;
 protected $useTimestamps = true;
 protected $allowedFields = [
     ';
-$index=0;
+$index = 0;
 foreach ($column as $obj) {
-    if($index!=0){echo '"' . $obj['Field'] . '",';}
-$index++;
+    if ($index != 0) {
+        echo '"' . $obj['Field'] . '",';
+    }
+    $index++;
 }
 echo '
 ];
