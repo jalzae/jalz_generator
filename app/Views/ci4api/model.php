@@ -10,14 +10,16 @@ protected $useSoftDeletes = true;
 protected $useTimestamps = true;
 protected $allowedFields = [
     ';
+$index=0;
 foreach ($column as $obj) {
-    echo '"' . $obj['Field'] . '"';
+    if($index!=0){echo '"' . $obj['Field'] . '",';}
+$index++;
 }
 echo '
 ];
-protected $createdField  = "' . $table . '_createdat";
-    protected $updatedField  = "' . $table . '_updatedat";
-    protected $deletedField  = "' . $table . '_deletedat";';
+//protected $createdField  = "' . $table . '_createdat";
+  //  protected $updatedField  = "' . $table . '_updatedat";
+    //protected $deletedField  = "' . $table . '_deletedat";';
 
 foreach ($column as $obj) {
     echo "protected $" . str_replace('_', '', $obj['Field']) . ";";
@@ -162,7 +164,7 @@ $data = [
 return $data;
 }
 
-public static validator(){
+public static function validator(){
 <?php
 
 if ($namespace != "1") {

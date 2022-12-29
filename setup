@@ -23,7 +23,7 @@ class Setup
     }
 
     // Perform query
-    if ($this->mysqli->query("CREATE DATABASE `idcosmart`
+    if ($this->mysqli->query("CREATE DATABASE `generator`
     DEFAULT CHARACTER SET = 'utf8mb4';")) {
       echo "Sukses";
     }
@@ -39,7 +39,7 @@ class Setup
     }
 
     // Perform query
-    if ($this->mysqli->query("DROP DATABASE IF EXISTS idcosmart;")) {
+    if ($this->mysqli->query("DROP DATABASE IF EXISTS generator;")) {
       echo "Deleted";
     }
 
