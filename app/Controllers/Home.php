@@ -11,6 +11,10 @@ use PhpParser\Node\Stmt\TryCatch;
 class Home extends BaseController
 {
 	use ResponseTrait;
+	protected $all;
+	protected $css;
+	protected $fw;
+	
 	public function __construct()
 	{
 		$this->css = new Css();
