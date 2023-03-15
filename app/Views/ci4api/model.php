@@ -5,14 +5,16 @@ protected $table = "' . $table . '";
 protected $primaryKey = "' . $column[0]['Field'] . '";
 protected $useAutoIncrement = true;
 protected $insertID = 1;
-protected $returnType = "App\Entities\' . ucfirst($table) . '";
-protected $useSoftDeletes = true;
+protected $returnType = "App\Entities\ ';
+echo ucfirst($table);
+echo '";';
+echo 'protected $useSoftDeletes = true;
 protected $useTimestamps = true;
 protected $allowedFields = [
     ';
 $index = 0;
 foreach ($column as $obj) {
-    if ($index != 0) {
+    if ($index != 0 || $obj['Field']!='entry_date'|| $obj['Field'] != 'update_date'|| $obj['Field'] != 'delete_date') {
         echo '"' . $obj['Field'] . '",';
     }
     $index++;

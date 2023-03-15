@@ -7,7 +7,7 @@ use App\Models\Console;
 
 class Sequelize extends BaseController
 {
-
+	protected $cmd;
 	public function __construct()
 	{
 		$this->cmd = new Console();
@@ -89,7 +89,7 @@ class Sequelize extends BaseController
 		$data['namespace'] = $namespace;
 		return view('sequelize/migration', $data);
 	}
-	
+
 	//Helper
 	function getStringBetween($str, $from, $to)
 	{

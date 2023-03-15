@@ -9,7 +9,11 @@ use App\Models\Functionc\Sql;
 
 class Command extends BaseController
 {
-	public function __construct()
+	protected $sequelize;
+	protected $ci4;
+	protected $sql;
+
+	function __construct()
 	{
 
 		$this->sequelize = new Sequelize();
@@ -64,7 +68,7 @@ class Command extends BaseController
 				if (empty($command[2])) {
 					return "Name Validation result must be provided";
 				}
-				return $this->sequelize->resultSequelizeModel($checked, $command[2]);
+				return $this->sequelize->resultSequelizeModel($checked, $command[2], false);
 			}
 
 			//Other error
