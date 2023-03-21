@@ -22,6 +22,9 @@ class Sequelize extends Model
 			} else if ($obj['type'] == "string") {
 				echo "type : Sequelize.STRING,
 				";
+			} else if ($obj['type'] == "text") {
+				echo "type : Sequelize.TEXT,
+				";
 			} else if ($obj['type'] == "varchar") {
 				echo "type : Sequelize.STRING(" . $obj['contraits'] . "),
 				";
@@ -87,6 +90,9 @@ class Sequelize extends Model
 				";
 			} else if ($obj['type'] == "string") {
 				echo "type : DataTypes.STRING,
+				";
+			} else if ($obj['type'] == "text") {
+				echo "type : DataTypes.TEXT,
 				";
 			} else if ($obj['type'] == "varchar") {
 				echo "type : DataTypes.STRING(" . $obj['contraits'] . "),
