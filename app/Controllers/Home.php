@@ -14,7 +14,7 @@ class Home extends BaseController
 	protected $all;
 	protected $css;
 	protected $fw;
-	
+
 	public function __construct()
 	{
 		$this->css = new Css();
@@ -42,7 +42,7 @@ class Home extends BaseController
 
 		$direktori = ROOTPATH . '/assets/file/';
 
-		$string = file_put_contents($direktori . 'data.json', json_encode($data,true));
+		$string = file_put_contents($direktori . 'data.json', json_encode($data, true));
 		if ($data) {
 			return $this->respond("Sukses", 200);
 		} else {
@@ -52,10 +52,9 @@ class Home extends BaseController
 
 	public function load_menu()
 	{
-		$direktori = ROOTPATH . '/assets/file/';
-		$string = file_get_contents($direktori . 'data.json');
+		$direktori =  ROOTPATH . 'assets/file/data.json';
+		$string = file_get_contents($direktori);
 		$data = json_decode($string, true);
-
 		try {
 			//code...
 			$this->all->table('css')->insertBatch($data['css']);
@@ -69,29 +68,5 @@ class Home extends BaseController
 		} catch (\Throwable $th) {
 			return $this->respond($th, 400);
 		}
-	}
-
-	public function sample_include()
-	{
-		$data = $this->all->table('employe')->get(10)->getResult('array');
-		$data = $this->all->includes($data, [
-			[
-				"table" => 'employe_staff',
-				'on' => 'id_employe=id_employe',
-				'type' => 'one',
-				'join' => [
-					[
-						'table' => 'employe_staff_unit',
-						'on' => 'employe_staff.id_staff=employe_staff_unit.id_employe_staff_unit',
-						'type' => 'left'
-					]
-				]
-			]
-		]);
-
-		echo '<pre>;';
-		print_r($data);
-		echo '</pre>;';
-		die();
 	}
 }
