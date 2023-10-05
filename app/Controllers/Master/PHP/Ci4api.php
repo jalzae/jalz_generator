@@ -8,6 +8,9 @@ use App\Models\Console;
 
 class Ci4api extends BaseController
 {
+	protected $cmd;
+	protected $all;
+
 	public function __construct()
 	{
 		$this->cmd = new Console();
