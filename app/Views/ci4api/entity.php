@@ -76,7 +76,7 @@ foreach ($column as $obj) {
     echo "'datatype' => '" . $resultType['result'][0] . "',";
 
     if (isset($resultType['result'][1])) {
-      if ($resultType['result'][1] != 11 && $resultType['result'][0] == 'int') {
+      if (($resultType['result'][1] != 11 && $resultType['result'][0] != 'int') || $resultType['result'][0] != 'text' || $resultType['result'][0] != 'datetime' || $resultType['result'][0] != 'date') {
         echo "'constraint' => '" . $resultType['result'][1] . "',";
       }
     }
